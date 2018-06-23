@@ -14,7 +14,7 @@ export default class App extends React.Component {
         this.state = {
             results: [],
             categories: ["restaurant", "bar"],
-            query: "",
+            querySet: false,
             range: "5000",
         }
     }
@@ -39,7 +39,10 @@ export default class App extends React.Component {
                 });
                 let places = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='
                     + this.state.latitude + ',' + this.state.longitude;
-                this.setState({query: places});
+                this.setState({
+                    query: places,
+                    querySet: true
+                });
             }).catch((error) => {
             console.error(error);
         });
@@ -49,6 +52,22 @@ export default class App extends React.Component {
 
   render() {
 
+        if(!this.state.querySet) {
+            return (
+                <ScrollView>
+                    <View>
+                        <Header />
+                        <City
+                            city={this.state.city}
+                            wikitext={this.state.text}
+                            callingCode={this.state.callingCode}
+                            region={this.state.regionName}
+                            country={this.state.countryName}
+                        />
+                    </View>
+                </ScrollView>
+            )
+        }
 
     return (
         <ScrollView>
@@ -61,7 +80,13 @@ export default class App extends React.Component {
                   region={this.state.regionName}
                   country={this.state.countryName}
               />
-              <Places cat={this.state.categories} query={this.state.query} />
+              {this.state.categories.map((category,index) => {
+                  return <Places
+                      cat={category}
+                      query={this.state.query}
+                      key={index}
+                  />
+              })}
           </View>
         </ScrollView>
     );

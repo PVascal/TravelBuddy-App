@@ -24,7 +24,7 @@ export default class Header extends React.Component {
         super(props);
 
         this.state = {
-                name: 'Welcome Wouter',
+                name: 'Welcome Pascal',
                 avatar: '',
                 check: false
         }

@@ -16,6 +16,9 @@ export default class Places extends React.Component {
 
     baseUrl = "https://maps.googleapis.com/maps/api/place/photo?maxheight=234&maxwidth=280&photoreference=";
     apikey = "&key=AIzaSyDA8JeZ3hy9n1XHBBuq6ke8M9BfiACME_E";
+    radius = '&radius=';
+    type = '&type=';
+    query= this.props.query + this.radius + "25000" + this.type + this.props.cat + this.apikey;
 
     componentDidMount() {
         this.newQuery()
@@ -23,7 +26,7 @@ export default class Places extends React.Component {
 
     newQuery() {
         let url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=Restaurants+in+Amsterdam&key=AIzaSyDA8JeZ3hy9n1XHBBuq6ke8M9BfiACME_E';
-        fetch(url)
+        fetch(this.query)
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
@@ -67,7 +70,7 @@ export default class Places extends React.Component {
 
         return(
             <View style={{flex: 1, paddingTop:20}}>
-                <Text style={styles.categoryTitle}>Restaurants</Text>
+                <Text style={styles.categoryTitle}>{this.props.cat.split('_').join(' ')}</Text>
                 <Carousel
                     ref={(c) => { this._carousel = c; }}
                     data={this.state.results}
