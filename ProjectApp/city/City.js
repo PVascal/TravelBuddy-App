@@ -7,14 +7,55 @@ export default class City extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state ={
+            isLoading: true,
+            results: []
+        }
+
+    }
+
+    componentDidMount() {
+        this.wikiQuery()
+    }
+
+    wikiQuery() {
+        let url = 'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=kollum';
+        fetch(url)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    isLoading: false,
+                    results: responseJson
+                }), function() {
+
+                }
+            })
+            .catch((error) => {
+
+            })
     }
 
     render() {
+
+        if(this.state.isLoading){
+            return(
+                <View style={styles.info}>
+                    <Image source={background}/>
+                    <View style={styles.infoText}>
+                        <Text>Gegevens worden opgehaald</Text>
+                        <Text>{this.state.results.length}</Text>
+                    </View>
+                </View>
+            )
+        }
+
         return (
             <View style={styles.info}>
                 <Image source={background}/>
                 <View style={styles.infoText}>
                     <Text style={styles.city}>{this.props.city}</Text>
+                    <Text style={styles.description}>{this.state.results[2][0]}</Text>
                     <Text style={styles.extraInfo}>Calling code: +{this.props.callingCode}</Text>
                     <Text style={styles.extraInfo}>Region: {this.props.region}</Text>
                     <Text style={styles.extraInfo}>Country: {this.props.country}</Text>
@@ -50,9 +91,17 @@ const styles = StyleSheet.create({
     },
     extraInfo: {
         fontSize: 16,
+        textAlign: 'center',
     },
     city: {
         fontSize: 30,
+        textAlign: 'center',
+    },
+    description: {
+        fontSize: 14,
+        textAlign: 'center',
+        marginTop: 30,
+        marginBottom: 30
     }
 });
 

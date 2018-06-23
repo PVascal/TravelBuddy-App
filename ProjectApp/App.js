@@ -53,6 +53,14 @@ export default class App extends React.Component {
     return (
         <ScrollView>
           <View>
+              <Header />
+              <City
+                  city={this.state.city}
+                  wikitext={this.state.text}
+                  callingCode={this.state.callingCode}
+                  region={this.state.regionName}
+                  country={this.state.countryName}
+              />
               <Places cat={this.state.categories} query={this.state.query} />
           </View>
         </ScrollView>

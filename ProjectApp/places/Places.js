@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
 
+import Carousel from 'react-native-snap-carousel';
 
 export default class Places extends React.Component {
 
@@ -39,11 +39,13 @@ export default class Places extends React.Component {
     }
 
     _renderItem ({item, index}) {
-        let image = this.baseUrl + item.photos[0].photo_reference + this.apikey;
         return (
             <View style={styles.slide}>
-                <Text>{ item.name }</Text>
-                <Image src={image} />
+                <Image style={{width: 300, height: 250}} source={{uri: "https://maps.googleapis.com/maps/api/place/photo?maxheight=234&maxwidth=280&photoreference=" +
+                    item.photos[0].photo_reference + "&key=AIzaSyDA8JeZ3hy9n1XHBBuq6ke8M9BfiACME_E"}} />
+                <View style={styles.titleBox} >
+                    <Text style={styles.title}>{ item.name }</Text>
+                </View>
             </View>
         );
     }
@@ -60,12 +62,12 @@ export default class Places extends React.Component {
             )
         }
 
-        let sliderWidth = 300;
-        let itemWidth = 200;
+        let sliderWidth = 350;
+        let itemWidth = 280;
 
         return(
             <View style={{flex: 1, paddingTop:20}}>
-                <Text>{this.state.results.length}</Text>
+                <Text style={styles.categoryTitle}>Restaurants</Text>
                 <Carousel
                     ref={(c) => { this._carousel = c; }}
                     data={this.state.results}
@@ -83,6 +85,26 @@ export default class Places extends React.Component {
 const styles = StyleSheet.create({
     places: {
         position: 'relative',
-        paddingTop: 50
+        paddingTop: 50,
+    },
+    titleBox: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        height: 50,
+        backgroundColor: 'orange',
+        width: 280,
+        justifyContent: 'center',
+    },
+    title: {
+        color: 'white',
+        textAlign: 'center',
+        fontSize: 16,
+    },
+    categoryTitle: {
+        fontSize: 24,
+        marginTop: 15,
+        marginBottom: 15,
+        marginLeft: 32,
     }
 });
