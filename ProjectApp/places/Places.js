@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert, Modal } from 'react-native';
 
 import Carousel from 'react-native-snap-carousel';
 
@@ -10,7 +10,7 @@ export default class Places extends React.Component {
 
         this.state ={
             isLoading: true,
-            results: []
+            results: [],
         }
     }
 
@@ -42,15 +42,20 @@ export default class Places extends React.Component {
     }
 
     _renderItem ({item, index}) {
-        return (
-            <View style={styles.slide}>
-                <Image style={{width: 300, height: 250}} source={{uri: "https://maps.googleapis.com/maps/api/place/photo?maxheight=234&maxwidth=280&photoreference=" +
-                    item.photos[0].photo_reference + "&key=AIzaSyDA8JeZ3hy9n1XHBBuq6ke8M9BfiACME_E"}} />
-                <View style={styles.titleBox} >
-                    <Text style={styles.title}>{ item.name }</Text>
-                </View>
+
+        let content = [];
+        content.push(
+            <View key={index}>
+                <TouchableOpacity style={styles.slide}>
+                    <Image style={{width: 300, height: 250}} source={{uri: "https://maps.googleapis.com/maps/api/place/photo?maxheight=234&maxwidth=280&photoreference=" +
+                        item.photos[0].photo_reference + "&key=AIzaSyDA8JeZ3hy9n1XHBBuq6ke8M9BfiACME_E"}} />
+                    <View style={styles.titleBox} >
+                        <Text style={styles.title}>{ item.name }</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         );
+        return content;
     }
 
 
@@ -70,6 +75,7 @@ export default class Places extends React.Component {
 
         return(
             <View style={{flex: 1, paddingTop:20}}>
+                <Text>{this.state.modal}</Text>
                 <Text style={styles.categoryTitle}>{this.props.cat.split('_').join(' ')}</Text>
                 <Carousel
                     ref={(c) => { this._carousel = c; }}

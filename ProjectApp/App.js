@@ -4,7 +4,8 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import Header from './header/Header';
 import City from './city/City';
 import Places from './places/Places';
-
+import Modal from './modal/Modal';
+import Navigation from "./Navigation";
 
 export default class App extends React.Component {
 
@@ -46,14 +47,68 @@ export default class App extends React.Component {
             }).catch((error) => {
             console.error(error);
         });
-
-
     }
 
-  render() {
+    handleClick = () => {
+        this.setState({
+            show: !this.state.show
+        });
+    };
+
+
+    modalHandler = (name) => {
+        this.setState({
+            showModal: true,
+            modalName: name,
+        })
+    }
+
+
+    hideModal = () => {
+        this.setState({showModal: false})
+    };
+
+    render() {
+
+        let viewModal = null;
+        if(this.state.showModal){
+            viewModal = <Modal
+                click={this.hideModal}
+                image = {this.state.modalImage}
+                name = {this.state.modalName}
+                address={this.state.modalAddress}
+                open = {this.state.modalOpen}
+                lat = {this.state.modalLat}
+                lng = {this.state.modalLng}
+                id = {this.state.modalId}
+                latitude = {this.state.latitude}
+                longitude = {this.state.longitude}
+                currentLat = {this.state.latitude}
+                currentLng = {this.state.longitude}
+            />
+        }
 
         if(!this.state.querySet) {
             return (
+                <View style={{flex: 1}}>
+                    <ScrollView>
+                        <View>
+                            <Header />
+                            <City
+                                city={this.state.city}
+                                wikitext={this.state.text}
+                                callingCode={this.state.callingCode}
+                                region={this.state.regionName}
+                                country={this.state.countryName}
+                            />
+                        </View>
+                    </ScrollView>
+                </View>
+            )
+        }
+
+        return (
+            <View style={{flex: 1}}>
                 <ScrollView>
                     <View>
                         <Header />
@@ -64,31 +119,25 @@ export default class App extends React.Component {
                             region={this.state.regionName}
                             country={this.state.countryName}
                         />
+                        <View style={styles.placesContainer}>
+                            {this.state.categories.map((category,index) => {
+                                return <Places
+                                    cat={category}
+                                    query={this.state.query}
+                                    key={index}
+                                />
+                            })}
+                        </View>
                     </View>
                 </ScrollView>
-            )
-        }
-
-    return (
-        <ScrollView>
-          <View>
-              <Header />
-              <City
-                  city={this.state.city}
-                  wikitext={this.state.text}
-                  callingCode={this.state.callingCode}
-                  region={this.state.regionName}
-                  country={this.state.countryName}
-              />
-              {this.state.categories.map((category,index) => {
-                  return <Places
-                      cat={category}
-                      query={this.state.query}
-                      key={index}
-                  />
-              })}
-          </View>
-        </ScrollView>
-    );
-  }
+                <Navigation />
+            </View>
+        );
+    }
 }
+
+const styles = StyleSheet.create({
+    placesContainer: {
+        marginBottom: 75,
+    },
+});
