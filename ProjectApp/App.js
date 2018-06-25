@@ -70,24 +70,6 @@ export default class App extends React.Component {
 
     render() {
 
-        let viewModal = null;
-        if(this.state.showModal){
-            viewModal = <Modal
-                click={this.hideModal}
-                image = {this.state.modalImage}
-                name = {this.state.modalName}
-                address={this.state.modalAddress}
-                open = {this.state.modalOpen}
-                lat = {this.state.modalLat}
-                lng = {this.state.modalLng}
-                id = {this.state.modalId}
-                latitude = {this.state.latitude}
-                longitude = {this.state.longitude}
-                currentLat = {this.state.latitude}
-                currentLng = {this.state.longitude}
-            />
-        }
-
         if(!this.state.querySet) {
             return (
                 <View style={{flex: 1}}>
@@ -125,6 +107,7 @@ export default class App extends React.Component {
                                     cat={category}
                                     query={this.state.query}
                                     key={index}
+                                    func={this.modalHandler}
                                 />
                             })}
                         </View>
