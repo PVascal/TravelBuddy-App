@@ -2,8 +2,6 @@ import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
-import logo from '../images/logo.png';
-
 export default class Header extends React.Component {
 
     _menu = null;
@@ -46,9 +44,6 @@ export default class Header extends React.Component {
                         <MenuItem onPress={this.hideMenu}>Add event </MenuItem>
                         <MenuItem onPress={this.hideMenu}>Login</MenuItem>
                     </Menu>
-                </View>
-                <View style={styles.logo}>
-                    <Image source={logo}/>
                 </View>
     </View>
         )

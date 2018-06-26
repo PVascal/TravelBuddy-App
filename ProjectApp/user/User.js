@@ -2,8 +2,9 @@ import React from 'react';
 import { View, StyleSheet, TouchableHighlight, Text } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import MaskTabBar from 'react-native-scrollable-tab-view-mask-bar';
-import Tab from '../tab/Tab';
-import Settings from '../tab/SettingsTab';
+import Preferences from '../tab/Preferences';
+import Settings from '../tab/Settings';
+import Favorites from '../tab/Favorites';
 
 export default class User extends React.Component {
 
@@ -32,10 +33,10 @@ export default class User extends React.Component {
                         underlineStyle={tabUnderlineStyle}
                         backgroundColor={"#495057"}
                         showMask={false} maskMode='light' />}>
-                    <Tab tabLabel="Preferences" index={0}/>
-                    <Tab tabLabel="Places" index={1}/>
+                    <Preferences tabLabel="Preferences" index={0}/>
+                    <Favorites tabLabel="Favorites" index={1}/>
                     <Settings tabLabel="Settings" index={2}/>
-                    <Tab tabLabel="Friends" index={3}/>
+                    <Preferences tabLabel="Friends" index={3}/>
                 </ScrollableTabView>
             </View>
             )

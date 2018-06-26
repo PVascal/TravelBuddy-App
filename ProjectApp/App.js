@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 
 import Header from './header/Header';
 import City from './city/City';
 import Places from './places/Places';
 import Modal from './modal/Modal';
 import User from './user/User'
+
+import logo from './images/logo.png';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import BottomNavigation, {
@@ -161,6 +163,9 @@ export default class App extends React.Component {
         if (this.state.activeTab == 'home') {
             return (
                 <View>
+                    <View style={styles.logo}>
+                        <Image source={logo}/>
+                    </View>
                     <City
                         city={this.state.city}
                         wikitext={this.state.text}

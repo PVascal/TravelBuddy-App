@@ -1,12 +1,12 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 
-export default class Tab extends React.Component {
+export default class Settings extends React.Component {
 
     render() {
         return (
             <View style={{position: 'relative'}}>
-                <Text style={{fontSize: 30}}>Pagina</Text>
+                <Text style={{fontSize: 30}}>Settings</Text>
             </View>
         )
     }
