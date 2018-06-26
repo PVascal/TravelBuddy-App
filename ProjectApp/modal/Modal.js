@@ -10,7 +10,7 @@ export default class Modal extends React.Component {
 
     render() {
         return(
-                <Text>{this.props.name}</Text>
+                <Text>TestAAAAAAAAA</Text>
             )
     }
 
