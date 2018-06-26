@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, ScrollView} from 'react-native';
 
 export default class Favorites extends React.Component {
 
@@ -8,6 +8,7 @@ export default class Favorites extends React.Component {
 
         this.state = ({
             categories: [],
+            keyList: [],
         })
     }
 
@@ -19,13 +20,24 @@ export default class Favorites extends React.Component {
         fetch('http://10.0.2.2:5000/api/categories')
             .then((response) => response.json())
             .then((responseJson) => {
+                let temp = [];
                 this.setState({
                     categories: responseJson
                 }), function() {
 
                 }
-                console.log("Fetch is gelukt")
-                console.log(JSON.stringify(responseJson, null, 4))
+                //console.log(JSON.stringify(responseJson, null, 4))
+                //console.log(this.state.categories.length)
+
+                for (var key in this.state.categories) {
+                    temp.push(key)
+                    console.log(key)
+                }
+
+                this.setState({
+                    keyList: temp,
+                })
+
             })
             .catch((error) => {
                 console.error(error);
@@ -35,8 +47,12 @@ export default class Favorites extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={{fontSize: 30}}>Favorites</Text>
-                <Text>{this.state.categories.length}</Text>
+                <ScrollView>
+                    <Text style={{fontSize: 30}}>Favorites</Text>
+                    {this.state.keyList.map((key, index) => {
+                        return <Text key={index}>{key.split('_').join(' ')}</Text>
+                    })}
+                </ScrollView>
             </View>
         )
     }

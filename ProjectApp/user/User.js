@@ -48,7 +48,7 @@ export default class User extends React.Component {
 const styles = StyleSheet.create({
     tabContainer: {
        position: 'relative',
-       minHeight: 400,
+       minHeight: 1000,
     },
 });
 
