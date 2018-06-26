@@ -1,11 +1,26 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableHighlight, Text } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import MaskTabBar from 'react-native-scrollable-tab-view-mask-bar';
 import Tab from '../tab/Tab';
 import Settings from '../tab/SettingsTab';
 
 export default class User extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { count: 1 }
+
+        this.onPressClick = this.onPress.bind(this);
+
+    }
+
+    onPress = () => {
+        this.setState({
+            count: this.state.count+1,
+        })
+    }
+
 
     render() {
         return (
@@ -17,10 +32,10 @@ export default class User extends React.Component {
                         underlineStyle={tabUnderlineStyle}
                         backgroundColor={"#495057"}
                         showMask={false} maskMode='light' />}>
-                    <Tab tabLabel="Preferences"/>
-                    <Tab tabLabel="Places" />
-                    <Settings tabLabel="Settings" />
-                    <Tab tabLabel="Friends" />
+                    <Tab tabLabel="Preferences" index={0}/>
+                    <Tab tabLabel="Places" index={1}/>
+                    <Settings tabLabel="Settings" index={2}/>
+                    <Tab tabLabel="Friends" index={3}/>
                 </ScrollableTabView>
             </View>
             )
@@ -32,6 +47,7 @@ export default class User extends React.Component {
 const styles = StyleSheet.create({
     tabContainer: {
        position: 'relative',
+       minHeight: 400,
     },
 });
 

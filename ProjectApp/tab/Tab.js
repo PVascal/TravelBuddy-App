@@ -5,7 +5,7 @@ export default class Tab extends React.Component {
 
     render() {
         return (
-            <View style={{position: 'relative', marginTop: 50}}>
+            <View style={{position: 'relative'}}>
                 <Text style={{fontSize: 30}}>Pagina</Text>
             </View>
         )
