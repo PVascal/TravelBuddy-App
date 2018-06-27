@@ -37,10 +37,18 @@ export default class Preferences extends React.Component {
     }
 
     sendCredentials() {
+
+        var value = this.refs.form.getValue();
+        if (value) {
+            console.log(value);
+            console.log(value.name);
+            console.log(value.password);
+        }
+
         console.log("Formulier verzonden..")
         var details = {
-            'email': 'kees@kees.nl',
-            'password': 'kees',
+            'email': value.name,
+            'password': value.password,
         };
 
         var formBody = [];
