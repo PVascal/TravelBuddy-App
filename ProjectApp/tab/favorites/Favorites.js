@@ -3,7 +3,6 @@ import {StyleSheet, View, Text, TextInput} from 'react-native';
 
 export default class Favorites extends React.Component {
 
-
     constructor(props) {
         super(props);
 

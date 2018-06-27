@@ -1,6 +1,8 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableHighlight} from 'react-native';
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 export default class Autocomplete extends React.Component {
 
     constructor(props) {
@@ -62,7 +64,9 @@ export default class Autocomplete extends React.Component {
                             <TouchableHighlight key={index}
                                 onPress={() => this.removePreference(index, preference, this.props.object[preference])}
                                 style={styles.preference} >
-                                <Text>{preference.split('_').join(' ')}</Text>
+                                <View>
+                                    <Text>{preference.split('_').join(' ')}<Icon size={16} color="black" name={"remove"} /></Text>
+                                </View>
                             </TouchableHighlight>
                         )
                     })}

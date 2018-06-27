@@ -6,6 +6,7 @@ import City from './city/City';
 import Places from './places/Places';
 import Modal from './modal/Modal';
 import User from './user/User'
+import Login from './login/Login'
 
 import logo from './images/logo.png';
 
@@ -187,7 +188,7 @@ export default class App extends React.Component {
         } else if (this.state.activeTab == 'profile') {
             return <User />
         } else if (this.state.activeTab == 'login') {
-            return <Text>Dit is de login page</Text>
+            return <Login />
         }
 
     }

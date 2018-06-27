@@ -2,8 +2,8 @@ import React from 'react';
 import { View, StyleSheet, TouchableHighlight, Text } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import MaskTabBar from 'react-native-scrollable-tab-view-mask-bar';
-import Favorites from '../tab/Favorites';
-import Settings from '../tab/Settings';
+import Favorites from '../tab/favorites/Favorites';
+import Settings from '../tab/settings/Settings';
 import Preferences from '../tab/preferences/Preferences';
 
 export default class User extends React.Component {
@@ -48,7 +48,7 @@ export default class User extends React.Component {
 const styles = StyleSheet.create({
     tabContainer: {
        position: 'relative',
-       minHeight: 1000,
+       minHeight: 750,
     },
 });
 
