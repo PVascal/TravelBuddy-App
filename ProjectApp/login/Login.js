@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text, ScrollView, TextInput, Button, TouchableHighlight} from 'react-native';
+import axios from 'react-native-axios';
 
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
@@ -27,6 +28,7 @@ export default class Preferences extends React.Component {
 
         this.state = {
             register: false,
+            username: ""
         }
 
         this.sendCredentials = this.sendCredentials.bind(this);
@@ -35,9 +37,45 @@ export default class Preferences extends React.Component {
     }
 
     sendCredentials() {
+        console.log("Formulier verzonden..")
+        var details = {
+            'email': 'kees@kees.nl',
+            'password': 'kees',
+        };
+
+        var formBody = [];
+        for (var property in details) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(details[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+        formBody = formBody.join("&");
+
+        fetch('http://10.0.2.2:5000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            },
+            body: formBody
+        }).then(function (response) {
+            //console.log(response)
+        })
+
+        fetch('http://10.0.2.2:5000/api/loginCheck')
+            .then((response) => response.json())
+            .then((responseJson)=> {
+                console.log(responseJson['username'])
+                this.setState({
+                    username: responseJson['username'],
+                })
+            }).catch((error) => {
+                console.log(error)
+        })
+
+
         var value = this.refs.form.getValue();
         if (value) {
-            console.log(value);
+            //console.log(value);
         }
     }
 
@@ -67,6 +105,7 @@ export default class Preferences extends React.Component {
                             <TouchableHighlight onPress={this.changePage}>
                                 <Text>Register here</Text>
                             </TouchableHighlight>
+                            <Text>{this.state.username}</Text>
                         </View>
                     </View>
                 </View>}
