@@ -1,58 +1,53 @@
 import React from 'react';
-import {StyleSheet, View, Text, ScrollView} from 'react-native';
+import {StyleSheet, View, Text, TextInput} from 'react-native';
 
 export default class Favorites extends React.Component {
+
 
     constructor(props) {
         super(props);
 
-        this.state = ({
+        this.state = {
+            jsonCategories: {},
             categories: [],
-            keyList: [],
-        })
-    }
+            results: [],
+            searchBar: ""
+        }
 
-    componentDidMount() {
-        this.getCategories()
-    }
-
-    getCategories() {
         fetch('http://10.0.2.2:5000/api/categories')
-            .then((response) => response.json())
-            .then((responseJson) => {
+            .then(result => {
                 let temp = [];
                 this.setState({
-                    categories: responseJson
-                }), function() {
-
-                }
-                //console.log(JSON.stringify(responseJson, null, 4))
-                //console.log(this.state.categories.length)
-
-                for (var key in this.state.categories) {
+                    jsonCategories: result.data
+                })
+                console.log("Data: " + result.data)
+                for (var key in this.state.jsonCategories) {
                     temp.push(key)
                     console.log(key)
                 }
-
                 this.setState({
-                    keyList: temp,
+                    categories: temp
                 })
+                console.log(this.state.categories)
+            }).catch((error) => {
+            console.error(error);
+        });
 
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <ScrollView>
-                    <Text style={{fontSize: 30}}>Favorites</Text>
-                    {this.state.keyList.map((key, index) => {
-                        return <Text key={index}>{key.split('_').join(' ')}</Text>
-                    })}
-                </ScrollView>
+                <View>
+                    <Text style={{fontSize: 24}}>My preferences</Text>
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text>Add preference:</Text>
+                    <TextInput
+                        style={styles.textField}
+                    />
+                </View>
             </View>
         )
     }
@@ -67,4 +62,14 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
     },
-})
+    inputContainer: {
+        marginTop: 10,
+        marginBottom: 10,
+    }, textField: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        paddingLeft: 5,
+        marginTop: 5,
+    }
+});

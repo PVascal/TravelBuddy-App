@@ -2,9 +2,9 @@ import React from 'react';
 import { View, StyleSheet, TouchableHighlight, Text } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import MaskTabBar from 'react-native-scrollable-tab-view-mask-bar';
-import Preferences from '../tab/Preferences';
-import Settings from '../tab/Settings';
 import Favorites from '../tab/Favorites';
+import Settings from '../tab/Settings';
+import Preferences from '../tab/preferences/Preferences';
 
 export default class User extends React.Component {
 
@@ -36,7 +36,7 @@ export default class User extends React.Component {
                     <Preferences tabLabel="Preferences" index={0}/>
                     <Favorites tabLabel="Favorites" index={1}/>
                     <Settings tabLabel="Settings" index={2}/>
-                    <Preferences tabLabel="Friends" index={3}/>
+                    <Favorites tabLabel="Friends" index={3}/>
                 </ScrollableTabView>
             </View>
             )
