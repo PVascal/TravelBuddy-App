@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, View, Text, ScrollView, TextInput, Button, TouchableHighlight} from 'react-native';
-import axios from 'react-native-axios';
 
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
@@ -32,6 +31,7 @@ export default class Preferences extends React.Component {
         }
 
         this.sendCredentials = this.sendCredentials.bind(this);
+        this.sendRegister = this.sendRegister.bind(this);
         this.changePage = this.changePage.bind(this);
 
     }
@@ -39,13 +39,7 @@ export default class Preferences extends React.Component {
     sendCredentials() {
 
         var value = this.refs.form.getValue();
-        if (value) {
-            console.log(value);
-            console.log(value.name);
-            console.log(value.password);
-        }
 
-        console.log("Formulier verzonden..")
         var details = {
             'email': value.name,
             'password': value.password,
@@ -80,11 +74,43 @@ export default class Preferences extends React.Component {
                 console.log(error)
         })
 
+    }
+
+    sendRegister() {
+
+        console.log("Send register form")
 
         var value = this.refs.form.getValue();
-        if (value) {
-            //console.log(value);
+
+        var details = {
+            'username': value.username,
+            'email': value.email,
+            'firstname' : value.firstname,
+            'lastname' : value.lastname,
+            'password': value.password,
+            'country': value.country,
+        };
+
+        var formBody = [];
+        for (var property in details) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(details[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
         }
+        formBody = formBody.join("&");
+
+        fetch('http://10.0.2.2:5000/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            },
+            body: formBody
+        }).then(function (response) {
+            console.log(response)
+        })
+        this.setState({
+            register: false,
+        })
     }
 
     changePage() {
@@ -125,7 +151,7 @@ export default class Preferences extends React.Component {
                             ref="form"
                             type={Register}
                         />
-                        <Button onPress={this.sendCredentials} title="Login" color="#ff922b"/>
+                        <Button onPress={this.sendRegister} title="Register" color="#ff922b"/>
                         <View style={styles.registerText}>
                             <Text>Already a member?</Text>
                             <TouchableHighlight onPress={this.changePage}>

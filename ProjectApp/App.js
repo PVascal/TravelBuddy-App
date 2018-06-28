@@ -60,17 +60,20 @@ export default class App extends React.Component {
                                     }
                                 }
                                 else {
-                                    this.setDefaultCategories();
+                                    this.setState({
+                                        categories: ['restaurant', 'bar']
+                                    })
 
                                 }
                             });
                 } else {
-                    this.setDefaultCategories();
+                    this.setState({
+                        categories: ['restaurant', 'bar']
+                    })
                 }
             }).catch((error) => {
             console.log(error)
         })
-
     }
 
     setDefaultCategories() {
@@ -238,6 +241,7 @@ export default class App extends React.Component {
         } else if (this.state.activeTab == 'profile') {
             return <User />
         } else if (this.state.activeTab == 'login') {
+            console.log("Username " + this.state.username)
             if (this.state.username == "") {
                 return <Login />
             } else {
