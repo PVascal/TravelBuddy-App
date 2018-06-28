@@ -18,7 +18,6 @@ export default class Autocomplete extends React.Component {
         fetch('http://10.0.2.2:5000/api/loginCheck')
             .then((response) => response.json())
             .then((responseJson)=> {
-                console.log(responseJson['username'])
                 if (responseJson['username'] != null) {
                     this.setState({
                         username: responseJson['username'],
@@ -36,7 +35,6 @@ export default class Autocomplete extends React.Component {
     }
 
     loadData() {
-        console.log("Load data")
         if(this.state.loggedIn) {
                 let url = "http://10.0.2.2:5000/api/user/preferences";
                 axios.get(url)
@@ -44,7 +42,6 @@ export default class Autocomplete extends React.Component {
                         let temp = [];
                         for (var key in response.data) {
                             temp.push(key)
-                            console.log(key)
                         }
                         this.setState({
                             preferences: temp
@@ -67,10 +64,7 @@ export default class Autocomplete extends React.Component {
         if (check == 0) {
             if(this.state.loggedIn) {
                 let url = "http://10.0.2.2:5000/api/user/preferences?id=" + i
-                console.log(url)
                 axios.post(url)
-                console.log(i)
-                console.log(result)
                 this.setState({
                     preferences: pref
                 })
@@ -82,7 +76,6 @@ export default class Autocomplete extends React.Component {
     removePreference(index, name, i) {
         if(this.state.loggedIn) {
             let url = "http://10.0.2.2:5000/api/user/preferences?id=" + i
-            console.log(url)
             axios.delete(url)
             let array = this.state.preferences;
             array.splice(index, 1);

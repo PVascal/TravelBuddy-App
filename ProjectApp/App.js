@@ -35,7 +35,6 @@ export default class App extends React.Component {
         fetch('http://10.0.2.2:5000/api/loginCheck')
             .then((response) => response.json())
             .then((responseJson)=> {
-                console.log(responseJson['username'])
                 if (responseJson['username'] != null) {
                     this.setState({
                         username: responseJson['username'],
@@ -54,7 +53,6 @@ export default class App extends React.Component {
                                         let temp = [];
                                         for (var key in response.data) {
                                             temp.push(key)
-                                            console.log(key)
                                         }
                                         this.setState({
                                             categories: temp
