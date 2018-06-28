@@ -8,6 +8,7 @@ import Modal from './modal/Modal';
 import User from './user/User'
 import Login from './login/Login'
 
+import axios from 'axios';
 import logo from './images/logo.png';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -23,12 +24,63 @@ export default class App extends React.Component {
 
         this.state = {
             results: [],
-            categories: ["restaurant", "bar"],
+            categories: [],
             querySet: false,
             range: "5000",
             activeTab: 'home',
+            username: "",
+            loggedIn: false,
         }
+
+        fetch('http://10.0.2.2:5000/api/loginCheck')
+            .then((response) => response.json())
+            .then((responseJson)=> {
+                console.log(responseJson['username'])
+                if (responseJson['username'] != null) {
+                    this.setState({
+                        username: responseJson['username'],
+                        loggedIn: true,
+                    })
+                }
+                if(this.state.loggedIn) {
+                    let url = "http://10.0.2.2:5000/api/user/preferences";
+                    axios.get(url)
+                        .then(response => {
+                                if(response.data) {
+                                    if(JSON.stringify(response.data) === '{}') {
+                                        this.setDefaultCategories();
+                                    }
+                                    else {
+                                        let temp = [];
+                                        for (var key in response.data) {
+                                            temp.push(key)
+                                            console.log(key)
+                                        }
+                                        this.setState({
+                                            categories: temp
+                                        })
+                                    }
+                                }
+                                else {
+                                    this.setDefaultCategories();
+
+                                }
+                            });
+                } else {
+                    this.setDefaultCategories();
+                }
+            }).catch((error) => {
+            console.log(error)
+        })
+
     }
+
+    setDefaultCategories() {
+        this.setState({
+            categories: ['restaurant', 'bar']
+        })
+    }
+
 
     tabs = [
         {
@@ -41,14 +93,14 @@ export default class App extends React.Component {
         {
             key: 'profile',
             icon: 'user',
-            label: 'Profile',
+            label: 'Search',
             barColor: '#ff922b',
             pressColor: 'rgba(255, 255, 255, 0.16)'
         },
         {
             key: 'login',
             icon: 'sign-in',
-            label: 'Login',
+            label: "Profile",
             barColor: '#ff922b',
             pressColor: 'rgba(255, 255, 255, 0.16)'
         }
@@ -188,7 +240,11 @@ export default class App extends React.Component {
         } else if (this.state.activeTab == 'profile') {
             return <User />
         } else if (this.state.activeTab == 'login') {
-            return <Login />
+            if (this.state.username == "") {
+                return <Login />
+            } else {
+                return <User />
+            }
         }
 
     }

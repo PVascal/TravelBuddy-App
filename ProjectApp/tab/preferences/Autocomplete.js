@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Text, TouchableHighlight} from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from 'axios';
 
 export default class Autocomplete extends React.Component {
 
@@ -9,12 +10,48 @@ export default class Autocomplete extends React.Component {
         super(props);
 
         this.state = {
-            preferences: ["clothing_store", 'bar', "restaurant", "restaurant", "restaurant"]
+            preferences: [],
+            loggedIn: false,
+            username: "",
         }
+
+        fetch('http://10.0.2.2:5000/api/loginCheck')
+            .then((response) => response.json())
+            .then((responseJson)=> {
+                console.log(responseJson['username'])
+                if (responseJson['username'] != null) {
+                    this.setState({
+                        username: responseJson['username'],
+                        loggedIn: true,
+                    })
+                }
+                this.loadData()
+            }).catch((error) => {
+            console.log(error)
+        })
 
         this.addPreference = this.addPreference.bind(this);
         this.removePreference = this.removePreference.bind(this);
 
+    }
+
+    loadData() {
+        console.log("Load data")
+        if(this.state.loggedIn) {
+                let url = "http://10.0.2.2:5000/api/user/preferences";
+                axios.get(url)
+                .then(response => {
+                        let temp = [];
+                        for (var key in response.data) {
+                            temp.push(key)
+                            console.log(key)
+                        }
+                        this.setState({
+                            preferences: temp
+                        })
+
+                });
+        }
     }
 
     addPreference(i, result) {
@@ -28,19 +65,31 @@ export default class Autocomplete extends React.Component {
         }
         pref.push(result)
         if (check == 0) {
+            if(this.state.loggedIn) {
+                let url = "http://10.0.2.2:5000/api/user/preferences?id=" + i
+                console.log(url)
+                axios.post(url)
+                console.log(i)
+                console.log(result)
                 this.setState({
                     preferences: pref
                 })
                 this.props.emptySearch();
+            }
         }
     }
 
     removePreference(index, name, i) {
+        if(this.state.loggedIn) {
+            let url = "http://10.0.2.2:5000/api/user/preferences?id=" + i
+            console.log(url)
+            axios.delete(url)
             let array = this.state.preferences;
             array.splice(index, 1);
             this.setState({
                 preferences: array
             });
+        }
     }
 
     render() {

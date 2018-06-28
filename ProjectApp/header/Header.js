@@ -22,10 +22,26 @@ export default class Header extends React.Component {
         super(props);
 
         this.state = {
-                name: 'Welcome Pascal',
+                name: 'Not logged in',
+                welcome: "",
                 avatar: '',
                 check: false
         }
+
+        fetch('http://10.0.2.2:5000/api/loginCheck')
+            .then((response) => response.json())
+            .then((responseJson)=> {
+                console.log(responseJson['username'])
+                if (responseJson['username'] != null) {
+                    this.setState({
+                        name: responseJson['username'],
+                        welcome: "Welcome "
+                    })
+                }
+            }).catch((error) => {
+            console.log(error)
+        })
+
     }
 
     render() {
@@ -33,7 +49,7 @@ export default class Header extends React.Component {
             <View>
                 <View style={styles.container}>
                     <View style={styles.half}>
-                        <Text>{this.state.name}</Text>
+                        <Text>{this.state.welcome + this.state.name}</Text>
                     </View>
                     <Menu
                         style={styles.half}
