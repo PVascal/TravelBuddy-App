@@ -47,7 +47,7 @@ export default class Preferences extends React.Component {
             <View style={styles.container}>
                 <ScrollView>
                     <Text style={{fontSize: 30}}>Preferences</Text>
-                    <PreferenceList possCat={this.state.keyList} object={this.state.categories}/>
+                    <PreferenceList possCat={this.state.keyList} object={this.state.categories} compare={this.props.compare} cat={this.props.cat}/>
                 </ScrollView>
             </View>
         )

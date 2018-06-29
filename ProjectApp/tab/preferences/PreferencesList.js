@@ -56,7 +56,7 @@ export default class PreferencesList extends React.Component {
                         onChangeText={(this.handleChange.bind(this))}
                     />
                 </View>
-                <Autocomplete suggestions={this.state.results} object={this.props.object} emptySearch={this.emptySearch} />
+                <Autocomplete suggestions={this.state.results} object={this.props.object} emptySearch={this.emptySearch} compare={this.props.compare} cat={this.props.cat}/>
             </View>
         )
     }

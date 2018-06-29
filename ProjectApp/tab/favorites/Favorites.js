@@ -28,6 +28,7 @@ export default class Favorites extends React.Component {
     loadData() {
         axios.get(this.url)
             .then(response => {
+                console.log("First " + response)
                 this.setState({
                     items: response.data
                 });
@@ -38,6 +39,7 @@ export default class Favorites extends React.Component {
                     if(favorite.placeId) {
                         axios.get(this.proxyUrl + this.placeDetailsUrl + favorite.placeId + this.key)
                             .then(response => {
+                                console.log("Second " + response)
                                 var temp1 = this.state.placeDetails;
                                 temp1[favorite.placeId] = response.data;
                                 this.setState({

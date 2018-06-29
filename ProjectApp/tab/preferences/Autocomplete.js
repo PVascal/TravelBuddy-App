@@ -13,6 +13,7 @@ export default class Autocomplete extends React.Component {
             preferences: [],
             loggedIn: false,
             username: "",
+            categories: this.props.cat,
         }
 
         fetch('http://10.0.2.2:5000/api/loginCheck')
@@ -66,8 +67,9 @@ export default class Autocomplete extends React.Component {
                 let url = "http://10.0.2.2:5000/api/user/preferences?id=" + i
                 axios.post(url)
                 this.setState({
-                    preferences: pref
+                    preferences: pref,
                 })
+                this.props.compare(result, this.state.categories)
                 this.props.emptySearch();
             }
         }
@@ -80,8 +82,9 @@ export default class Autocomplete extends React.Component {
             let array = this.state.preferences;
             array.splice(index, 1);
             this.setState({
-                preferences: array
+                preferences: array,
             });
+            this.props.compare(name, this.state.categories)
         }
     }
 

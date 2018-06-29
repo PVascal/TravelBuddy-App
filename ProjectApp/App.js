@@ -19,18 +19,19 @@ import BottomNavigation, {
 
 export default class App extends React.Component {
 
+    state = {
+        results: [],
+        categories: [],
+        querySet: false,
+        range: "5000",
+        activeTab: 'home',
+        username: "",
+        loggedIn: false,
+        loginStatus: "Not logged in",
+    }
+
     constructor(props) {
         super(props)
-
-        this.state = {
-            results: [],
-            categories: [],
-            querySet: false,
-            range: "5000",
-            activeTab: 'home',
-            username: "",
-            loggedIn: false,
-        }
 
         fetch('http://10.0.2.2:5000/api/loginCheck')
             .then((response) => response.json())
@@ -155,6 +156,53 @@ export default class App extends React.Component {
         this.setState({showModal: false})
     };
 
+    setStatus = (status) => {
+        if (status === "Uitloggen") {
+            this.setState({
+                loginStatus: "home",
+                activeTab: "home",
+                categories: ["restaurant", "bar"],
+                loggedIn: false,
+            })
+        } else {
+            this.setState({
+                loginStatus: "Logged in",
+                activeTab: "profile",
+                loggedIn: true,
+            })
+            this.getUserCategories()
+        }
+    }
+
+    getUserCategories() {
+        let url = "http://10.0.2.2:5000/api/user/preferences";
+        axios.get(url)
+            .then(response => {
+                let temp = [];
+                for (var key in response.data) {
+                    temp.push(key)
+                }
+                this.setState({
+                    categories: temp
+                })
+
+            });
+    }
+
+    compareCategories(preference, currentCategories) {
+        let temp = [];
+        let inArray = 0;
+        for (var i = 0; i < currentCategories.length; i++) {
+            if (currentCategories[i] == preference) {
+                currentCategories.splice(i, 1)
+                inArray++;
+            }
+        }
+        if (inArray === 0) {
+            currentCategories.push(preference)
+        }
+    }
+
     render() {
 
         let viewModal = null;
@@ -198,7 +246,7 @@ export default class App extends React.Component {
             <View style={{flex: 1}}>
                 <ScrollView>
                     <View>
-                        <Header />
+                        <Header status={this.state.loginStatus} />
                         {this.renderScreen()}
                     </View>
                 </ScrollView>
@@ -239,13 +287,12 @@ export default class App extends React.Component {
                 </View>
             )
         } else if (this.state.activeTab == 'profile') {
-            return <User />
+            return <User func={this.setStatus} compare={this.compareCategories} cat={this.state.categories}/>
         } else if (this.state.activeTab == 'login') {
-            console.log("Username " + this.state.username)
-            if (this.state.username == "") {
-                return <Login />
+            if (!this.state.loggedIn) {
+                return <Login func={this.setStatus} />
             } else {
-                return <User />
+                return <User func={this.setStatus} compare={this.compareCategories} cat={this.state.categories} />
             }
         }
 

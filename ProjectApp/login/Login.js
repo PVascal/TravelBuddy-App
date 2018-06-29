@@ -27,7 +27,8 @@ export default class Preferences extends React.Component {
 
         this.state = {
             register: false,
-            username: ""
+            username: "",
+            ok: true,
         }
 
         this.sendCredentials = this.sendCredentials.bind(this);
@@ -36,8 +37,13 @@ export default class Preferences extends React.Component {
 
     }
 
+    componentDidMount() {
+        //this.props.func("Hello World");
+    }
+
     sendCredentials() {
 
+        this.props.func("Hello World");
         var value = this.refs.form.getValue();
 
         var details = {
@@ -77,7 +83,7 @@ export default class Preferences extends React.Component {
     }
 
     sendRegister() {
-
+        this.props.func("Hello World")
         console.log("Send register form")
 
         var value = this.refs.form.getValue();
@@ -120,7 +126,6 @@ export default class Preferences extends React.Component {
             this.setState({register: false})
         }
     }
-
 
     render() {
         return (
