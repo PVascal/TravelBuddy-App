@@ -18,8 +18,7 @@ import BottomNavigation, {
 } from 'react-native-material-bottom-navigation'
 
 
-export default class App extends React.Component {
-
+class App extends React.Component {
     state = {
         results: [],
         categories: [],
@@ -329,3 +328,5 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
 });
+
+export default App;

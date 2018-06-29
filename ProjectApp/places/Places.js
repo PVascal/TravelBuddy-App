@@ -44,6 +44,7 @@ export default class Places extends React.Component {
     _renderItem ({item, index}) {
 
         let content = [];
+        item.photos != null  &&
         content.push(
             <View key={index}>
                 <TouchableOpacity style={styles.slide}>
