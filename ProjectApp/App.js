@@ -7,6 +7,7 @@ import Places from './places/Places';
 import Modal from './modal/Modal';
 import User from './user/User'
 import Login from './login/Login'
+import Search from './search/Search'
 
 import axios from 'axios';
 import logo from './images/logo.png';
@@ -93,15 +94,15 @@ export default class App extends React.Component {
             pressColor: 'rgba(255, 255, 255, 0.16)'
         },
         {
-            key: 'profile',
-            icon: 'user',
+            key: 'search',
+            icon: 'search',
             label: 'Search',
             barColor: '#ff922b',
             pressColor: 'rgba(255, 255, 255, 0.16)'
         },
         {
             key: 'login',
-            icon: 'sign-in',
+            icon: 'user',
             label: "Profile",
             barColor: '#ff922b',
             pressColor: 'rgba(255, 255, 255, 0.16)'
@@ -262,7 +263,7 @@ export default class App extends React.Component {
     }
 
     renderScreen = () => {
-        if (this.state.activeTab == 'home') {
+        if (this.state.activeTab === 'home') {
             return (
                 <View>
                     <View style={styles.logo}>
@@ -286,14 +287,16 @@ export default class App extends React.Component {
                     </View>
                 </View>
             )
-        } else if (this.state.activeTab == 'profile') {
+        } else if (this.state.activeTab === 'profile') {
             return <User func={this.setStatus} compare={this.compareCategories} cat={this.state.categories}/>
-        } else if (this.state.activeTab == 'login') {
+        } else if (this.state.activeTab === 'login') {
             if (!this.state.loggedIn) {
                 return <Login func={this.setStatus} />
             } else {
                 return <User func={this.setStatus} compare={this.compareCategories} cat={this.state.categories} />
             }
+        } else if (this.state.activeTab === 'search') {
+            return <Search />
         }
 
     }
