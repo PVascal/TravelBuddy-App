@@ -31,7 +31,7 @@ class App extends React.Component {
     }
 
     constructor(props) {
-        super(props)
+        super(props);
 
         fetch('http://10.0.2.2:5000/api/loginCheck')
             .then((response) => response.json())

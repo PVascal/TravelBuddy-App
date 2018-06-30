@@ -15,6 +15,36 @@ var Settings = t.struct({
     country: t.String,
 });
 
+var updateOptions = {
+    fields: {
+        username: {
+            label: 'Username',
+            error: 'Insert a valid username'
+        },
+        email: {
+            label: 'Email address',
+            error: 'Insert a valid email'
+        },
+        firstname: {
+            label: 'First name',
+            error: 'Insert your first name'
+        },
+        lastname: {
+            label: 'Last name',
+            error: 'Insert your last name'
+        },
+        password: {
+            label: 'Password',
+            error: 'Insert your password',
+            secureTextEntry: true
+        },
+        country: {
+            label: "County",
+            error: 'Insert a valid country',
+        }
+    }
+};
+
 
 
 export default class AccountSettings extends React.Component {
@@ -83,11 +113,8 @@ export default class AccountSettings extends React.Component {
 
     saveSettings() {
         var value = this.refs.form.getValue();
-        if (value) {
-            console.log(value);
-        }
 
-        if (value.password != null) {
+        if (value != null) {
             let url = 'http://10.0.2.2:5000/api/user';
             url += "?firstName=" + value.firstname;
             url += "&lastName=" + value.lastname;
@@ -102,9 +129,10 @@ export default class AccountSettings extends React.Component {
                         this.setState({
                             message: response.data.message,
                             messageId: "messageOk",
-                            password: ""
+                            password: "",
                         });
-                        window.setTimeout(() => this.setState({
+                        window.setTimeout(() => 
+                            this.setState({
                             message: null,
                             messageId: null
                         }), 2000);
@@ -130,6 +158,7 @@ export default class AccountSettings extends React.Component {
                             ref="form"
                             type={Settings}
                             value={this.state.values}
+                            options={updateOptions}
                         />
                         <Button onPress={this.saveSettings} title="Save settings" color="#ff922b"/>
                         <Text>{this.state.message}</Text>
