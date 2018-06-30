@@ -28,7 +28,7 @@ export default class Favorites extends React.Component {
     loadData() {
         axios.get(this.url)
             .then(response => {
-                console.log("First " + response)
+                console.log("First " + response.data)
                 this.setState({
                     items: response.data
                 });

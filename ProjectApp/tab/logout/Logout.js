@@ -27,11 +27,31 @@ export default class Logout extends React.Component {
 
     render() {
         return (
-            <TouchableOpacity onPress={this.logout}>
-                <Text>Logout please</Text>
-            </TouchableOpacity>
+            <View style={styles.container}>
+                <Text style={styles.title}>Logout</Text>
+                <Text style={styles.underTitle}>You can logout with the link below</Text>
+                <TouchableOpacity onPress={this.logout}>
+                    <Text>Logout</Text>
+                </TouchableOpacity>
+            </View>
         )
     }
 
-
 }
+
+const styles = StyleSheet.create({
+    container: {
+        position: 'relative',
+        paddingTop: 20,
+        paddingBottom: 20,
+        paddingLeft: 10,
+        paddingRight: 10,
+    },
+    title: {
+        fontSize: 30,
+        marginBottom: 25
+    },
+    underTitle: {
+        marginBottom: 15,
+    }
+})

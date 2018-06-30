@@ -56,7 +56,7 @@ export default class AccountSettings extends React.Component {
 
     loadData() {
         if(this.state.loggedIn) {
-            let url = 'http://10.0.2.2:5000/api/user/' + this.state.usernameId;
+            let url = 'http://10.0.2.2:5000/api/user';
             axios.get(url)
                 .then(result => {
                     result = result.data;
@@ -86,6 +86,36 @@ export default class AccountSettings extends React.Component {
         if (value) {
             console.log(value);
         }
+
+        let url = 'http://10.0.2.2:5000/api/user';
+        url += "?firstName=" + value.firstname;
+        url += "&lastName=" + value.lastname;
+        url += "&username=" + value.username;
+        url += "&email=" + value.email;
+        url += "&password=" + value.password;
+        url += "&country=" + value.country;
+
+        axios.put(url)
+            .then(response => {
+                if(response.data) {
+                    this.setState({
+                        message: response.data.message,
+                        messageId: "messageOk",
+                        password: ""
+                    });
+                    window.setTimeout(() => this.setState({
+                        message: null,
+                        messageId: null
+                    }), 2000);
+                }
+            })
+            .catch(error => {
+                this.setState({
+                    message: error.response.data.message,
+                    messageId: "messageError",
+                });
+            });
+
     }
 
     render() {

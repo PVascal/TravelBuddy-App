@@ -167,7 +167,7 @@ class App extends React.Component {
         } else {
             this.setState({
                 loginStatus: "Logged in",
-                activeTab: "profile",
+                activeTab: "home",
                 loggedIn: true,
             })
             this.getUserCategories()

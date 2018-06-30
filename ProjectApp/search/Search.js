@@ -19,7 +19,7 @@ var categories = []
 export default class Search extends React.Component {
 
     state = {
-        searchType: "city",
+        searchType: "keyword",
         results: [],
         categories: [],
         input: '',
