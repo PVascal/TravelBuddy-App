@@ -83,7 +83,7 @@ export default class Preferences extends React.Component {
     }
 
     sendRegister() {
-        this.props.func("Hello World")
+        this.props.func("register")
         console.log("Send register form")
 
         var value = this.refs.form.getValue();

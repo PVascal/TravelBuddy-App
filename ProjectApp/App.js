@@ -164,6 +164,11 @@ class App extends React.Component {
                 categories: ["restaurant", "bar"],
                 loggedIn: false,
             })
+        } else if (status === 'register') {
+            this.setState({
+                activeTab: "login",
+                loggedIn: false,
+            })
         } else {
             this.setState({
                 loginStatus: "Logged in",

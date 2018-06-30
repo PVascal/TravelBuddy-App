@@ -87,34 +87,36 @@ export default class AccountSettings extends React.Component {
             console.log(value);
         }
 
-        let url = 'http://10.0.2.2:5000/api/user';
-        url += "?firstName=" + value.firstname;
-        url += "&lastName=" + value.lastname;
-        url += "&username=" + value.username;
-        url += "&email=" + value.email;
-        url += "&password=" + value.password;
-        url += "&country=" + value.country;
+        if (value.password != null) {
+            let url = 'http://10.0.2.2:5000/api/user';
+            url += "?firstName=" + value.firstname;
+            url += "&lastName=" + value.lastname;
+            url += "&username=" + value.username;
+            url += "&email=" + value.email;
+            url += "&password=" + value.password;
+            url += "&country=" + value.country;
 
-        axios.put(url)
-            .then(response => {
-                if(response.data) {
+            axios.put(url)
+                .then(response => {
+                    if(response.data) {
+                        this.setState({
+                            message: response.data.message,
+                            messageId: "messageOk",
+                            password: ""
+                        });
+                        window.setTimeout(() => this.setState({
+                            message: null,
+                            messageId: null
+                        }), 2000);
+                    }
+                })
+                .catch(error => {
                     this.setState({
-                        message: response.data.message,
-                        messageId: "messageOk",
-                        password: ""
+                        message: error.response.data.message,
+                        messageId: "messageError",
                     });
-                    window.setTimeout(() => this.setState({
-                        message: null,
-                        messageId: null
-                    }), 2000);
-                }
-            })
-            .catch(error => {
-                this.setState({
-                    message: error.response.data.message,
-                    messageId: "messageError",
                 });
-            });
+        }
 
     }
 
@@ -130,6 +132,7 @@ export default class AccountSettings extends React.Component {
                             value={this.state.values}
                         />
                         <Button onPress={this.saveSettings} title="Save settings" color="#ff922b"/>
+                        <Text>{this.state.message}</Text>
                     </View>
                 </View>
             </View>
