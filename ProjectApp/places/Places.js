@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Alert, Modal } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert, Modal, Button } from 'react-native';
 
 import Carousel from 'react-native-snap-carousel';
 
@@ -41,19 +41,39 @@ export default class Places extends React.Component {
             });
     }
 
-    _renderItem ({item, index}) {
+    _renderItem = ({item, index}) => {
+
+        let open = "";
+        if (item.opening_hours === undefined) {
+            open = "No opening hours available"
+        } else {
+            if (item.opening_hours.open_now) {
+                open = "Open now";
+            } else {
+                open = "Closed now"
+            }
+        }
 
         let content = [];
         item.photos != null  &&
         content.push(
             <View key={index}>
-                <TouchableOpacity style={styles.slide}>
+                <View style={styles.slide}>
                     <Image style={{width: 300, height: 250}} source={{uri: "https://maps.googleapis.com/maps/api/place/photo?maxheight=234&maxwidth=280&photoreference=" +
                         item.photos[0].photo_reference + "&key=AIzaSyDA8JeZ3hy9n1XHBBuq6ke8M9BfiACME_E"}} />
                     <View style={styles.titleBox} >
                         <Text style={styles.title}>{ item.name }</Text>
                     </View>
-                </TouchableOpacity>
+                    <Button title={'Details'} color={'#ff922b'} onPress={() => this.props.handler(
+                        item.name,
+                        item.photos[0].photo_reference,
+                        item.vicinity,
+                        open,
+                        item.geometry.location.lat,
+                        item.geometry.location.lng,
+                        item.place_id,
+                    )} />
+                </View>
             </View>
         );
         return content;
@@ -99,7 +119,7 @@ const styles = StyleSheet.create({
     },
     titleBox: {
         position: 'absolute',
-        bottom: 0,
+        bottom: 30,
         left: 0,
         height: 50,
         backgroundColor: '#ff922b',

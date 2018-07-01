@@ -131,7 +131,7 @@ export default class AccountSettings extends React.Component {
                             messageId: "messageOk",
                             password: "",
                         });
-                        window.setTimeout(() => 
+                        window.setTimeout(() =>
                             this.setState({
                             message: null,
                             messageId: null

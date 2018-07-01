@@ -4,6 +4,7 @@ import {StyleSheet, View, Text, Image, ScrollView, TextInput, FlatList, Picker, 
 import background from '../images/searchBanner.jpg';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import ResultList from "./ResultList";
+import Modal from '../modal/Modal';
 
 var radius = [
     {label: '5 km', value: 5000 },
@@ -28,6 +29,7 @@ export default class Search extends React.Component {
         language: "",
         locationLng: "",
         locationLat: "",
+        active: "search",
     }
 
     apikey = "&key=AIzaSyDA8JeZ3hy9n1XHBBuq6ke8M9BfiACME_E";
@@ -141,10 +143,29 @@ export default class Search extends React.Component {
             });
     }
 
-    render() {
-        return (
-            <View>
-                <ScrollView>
+    modalHandler = (name, image, address, lat, lng, id) => {
+        this.setState({
+            modalName: name,
+            modalImage: image,
+            modalAddress: address,
+            modalLat: lat,
+            modalLng: lng,
+            modalId: id,
+            active: 'modal'
+        })
+    }
+
+
+    hideModal = () => {
+        this.setState({
+            active: 'search',
+        })
+    };
+
+    getContent() {
+        if (this.state.active === 'search') {
+            return (
+                <View>
                     <View style={styles.info}>
                         <Image source={background} style={styles.background}/>
                         <View style={styles.infoText}>
@@ -192,9 +213,30 @@ export default class Search extends React.Component {
                         </View>
                     </View>
                     }
-                    <View>
+                    <ResultList results={this.state.results} handler={this.modalHandler}/>
+                </View>
+            )
+        } else {
+            return <Modal
+                name={this.state.modalName}
+                image = {this.state.modalImage}
+                address={this.state.modalAddress}
+                open = {this.state.modalOpen}
+                lat = {this.state.modalLat}
+                lng = {this.state.modalLng}
+                id = {this.state.modalId}
+                close={this.hideModal}
+            />
+        }
 
-                        <ResultList results={this.state.results} />
+    }
+
+    render() {
+        return (
+            <View>
+                <ScrollView>
+                    <View>
+                        {this.getContent()}
                     </View>
                 </ScrollView>
             </View>
