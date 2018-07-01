@@ -9,6 +9,21 @@ var Login = t.struct({
     password: t.String,
 });
 
+
+var loginOptions = {
+    fields: {
+        name: {
+            label: 'Email address',
+            error: 'Insert a valid email'
+        },
+        password: {
+            label: 'Password',
+            error: 'Insert a valid password',
+            secureTextEntry: true
+        }
+    }
+};
+
 var Register = t.struct({
     username: t.String,
     email: t.String,
@@ -17,6 +32,36 @@ var Register = t.struct({
     password: t.String,
     country: t.String,
 });
+
+var registerOptions = {
+    fields: {
+        username: {
+            label: 'Username',
+            error: 'Insert a valid username'
+        },
+        email: {
+            label: 'Email address',
+            error: 'Insert a valid email'
+        },
+        firstname: {
+            label: 'First name',
+            error: 'Insert your first name'
+        },
+        lastname: {
+            label: 'Last name',
+            error: 'Insert your last name'
+        },
+        password: {
+            label: 'Password',
+            error: 'Insert a valid password',
+            secureTextEntry: true
+        },
+        country: {
+            label: "County",
+            error: 'Insert a valid country',
+        }
+    }
+};
 
 
 
@@ -43,80 +88,89 @@ export default class Preferences extends React.Component {
 
     sendCredentials() {
 
-        this.props.func("Hello World");
         var value = this.refs.form.getValue();
 
-        var details = {
-            'email': value.name,
-            'password': value.password,
-        };
+        if (value != null) {
 
-        var formBody = [];
-        for (var property in details) {
-            var encodedKey = encodeURIComponent(property);
-            var encodedValue = encodeURIComponent(details[property]);
-            formBody.push(encodedKey + "=" + encodedValue);
-        }
-        formBody = formBody.join("&");
+            this.props.func("Hello World");
 
-        fetch('http://10.0.2.2:5000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-            },
-            body: formBody
-        }).then(function (response) {
-            //console.log(response)
-        })
+            var details = {
+                'email': value.name,
+                'password': value.password,
+            };
 
-        fetch('http://10.0.2.2:5000/api/loginCheck')
-            .then((response) => response.json())
-            .then((responseJson)=> {
-                console.log(responseJson['username'])
-                this.setState({
-                    username: responseJson['username'],
-                })
-            }).catch((error) => {
+            var formBody = [];
+            for (var property in details) {
+                var encodedKey = encodeURIComponent(property);
+                var encodedValue = encodeURIComponent(details[property]);
+                formBody.push(encodedKey + "=" + encodedValue);
+            }
+            formBody = formBody.join("&");
+
+            fetch('http://10.0.2.2:5000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: formBody
+            }).then(function (response) {
+                //console.log(response)
+            })
+
+            fetch('http://10.0.2.2:5000/api/loginCheck')
+                .then((response) => response.json())
+                .then((responseJson)=> {
+                    console.log(responseJson['username'])
+                    this.setState({
+                        username: responseJson['username'],
+                    })
+                }).catch((error) => {
                 console.log(error)
-        })
+            })
+        }
+
 
     }
 
     sendRegister() {
-        this.props.func("register")
-        console.log("Send register form")
 
         var value = this.refs.form.getValue();
 
-        var details = {
-            'username': value.username,
-            'email': value.email,
-            'firstname' : value.firstname,
-            'lastname' : value.lastname,
-            'password': value.password,
-            'country': value.country,
-        };
+        if (value != null) {
+            this.props.func("register")
 
-        var formBody = [];
-        for (var property in details) {
-            var encodedKey = encodeURIComponent(property);
-            var encodedValue = encodeURIComponent(details[property]);
-            formBody.push(encodedKey + "=" + encodedValue);
+            var value = this.refs.form.getValue();
+
+            var details = {
+                'username': value.username,
+                'email': value.email,
+                'firstname' : value.firstname,
+                'lastname' : value.lastname,
+                'password': value.password,
+                'country': value.country,
+            };
+
+            var formBody = [];
+            for (var property in details) {
+                var encodedKey = encodeURIComponent(property);
+                var encodedValue = encodeURIComponent(details[property]);
+                formBody.push(encodedKey + "=" + encodedValue);
+            }
+            formBody = formBody.join("&");
+
+            fetch('http://10.0.2.2:5000/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: formBody
+            }).then(function (response) {
+                console.log(response)
+            })
+            this.setState({
+                register: false,
+            })
         }
-        formBody = formBody.join("&");
-
-        fetch('http://10.0.2.2:5000/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-            },
-            body: formBody
-        }).then(function (response) {
-            console.log(response)
-        })
-        this.setState({
-            register: false,
-        })
     }
 
     changePage() {
@@ -137,6 +191,7 @@ export default class Preferences extends React.Component {
                         <Form
                             ref="form"
                             type={Login}
+                            options={loginOptions}
                         />
                         <Button onPress={this.sendCredentials} title="Login" color="#ff922b"/>
                         <View style={styles.registerText}>
@@ -155,6 +210,7 @@ export default class Preferences extends React.Component {
                         <Form
                             ref="form"
                             type={Register}
+                            options={registerOptions}
                         />
                         <Button onPress={this.sendRegister} title="Register" color="#ff922b"/>
                         <View style={styles.registerText}>

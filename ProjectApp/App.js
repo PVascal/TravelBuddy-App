@@ -83,7 +83,6 @@ class App extends React.Component {
         })
     }
 
-
     tabs = [
         {
             key: 'home',
@@ -144,16 +143,24 @@ class App extends React.Component {
     };
 
 
-    modalHandler = (name) => {
+    modalHandler = (name, image, address, open, lat, lng, id) => {
         this.setState({
-            showModal: true,
             modalName: name,
+            modalImage: image,
+            modalAddress: address,
+            modalOpen: open,
+            modalLat: lat,
+            modalLng: lng,
+            modalId: id,
+            activeTab: 'modal'
         })
     }
 
 
     hideModal = () => {
-        this.setState({showModal: false})
+        this.setState({
+            activeTab: 'home',
+        })
     };
 
     setStatus = (status) => {
@@ -286,6 +293,7 @@ class App extends React.Component {
                                 cat={category}
                                 query={this.state.query}
                                 key={index}
+                                handler={this.modalHandler}
                             />
                         })}
                     </View>
@@ -301,6 +309,17 @@ class App extends React.Component {
             }
         } else if (this.state.activeTab === 'search') {
             return <Search />
+        } else if (this.state.activeTab === 'modal') {
+            return <Modal
+                name={this.state.modalName}
+                image = {this.state.modalImage}
+                address={this.state.modalAddress}
+                open = {this.state.modalOpen}
+                lat = {this.state.modalLat}
+                lng = {this.state.modalLng}
+                id = {this.state.modalId}
+                close={this.hideModal}
+            />
         }
 
     }
