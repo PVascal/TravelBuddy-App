@@ -269,14 +269,17 @@ var Settings = t.struct({
 
 
 var updateOptions = {
+    order: ['username', 'email', 'firstname', 'lastname', 'password', 'country'],
     fields: {
         username: {
             label: 'Username',
-            error: 'Insert a valid username'
+            error: 'Insert a valid username',
+            editable: false,
         },
         email: {
             label: 'Email address',
-            error: 'Insert a valid email'
+            error: 'Insert a valid email',
+            editable: false,
         },
         firstname: {
             label: 'First name',
@@ -403,6 +406,7 @@ export default class AccountSettings extends React.Component {
                     }
                 })
                 .catch(error => {
+                    console.log("Error message: " + error.response.data.message)
                     this.setState({
                         message: error.response.data.message,
                         messageId: "messageError",
@@ -426,7 +430,7 @@ export default class AccountSettings extends React.Component {
                             value={this.state.values}
                             options={updateOptions}
                         />
-                        <Button onPress={this.saveSettings} title="Save settings" color="#ff922b"/>
+                        <Button onPress={this.saveSettings} title="Save settings" color="#495057"/>
                     </View>
                 </View>
             </View>
@@ -439,7 +443,7 @@ const styles = StyleSheet.create({
     container: {
         position: 'relative',
         paddingTop: 20,
-        paddingBottom: 20,
+        paddingBottom: 50,
         paddingLeft: 10,
         paddingRight: 10,
     },

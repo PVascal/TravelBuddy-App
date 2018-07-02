@@ -1,5 +1,7 @@
 import React from 'react';
-import {StyleSheet, View, Text, ScrollView, TextInput, Button, TouchableHighlight} from 'react-native';
+import {StyleSheet, View, Text, ScrollView, TextInput, Button, TouchableHighlight, Alert} from 'react-native';
+
+import axios from 'axios';
 
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
@@ -318,6 +320,18 @@ var registerOptions = {
 
 export default class Preferences extends React.Component {
 
+    errorLogin = () => {
+        Alert.alert(
+           "Invalid email or password."
+        )
+    }
+
+    registerError = () => {
+        Alert.alert(
+            this.state.errorMessage
+        )
+    }
+
     constructor(props) {
         super(props);
 
@@ -325,6 +339,7 @@ export default class Preferences extends React.Component {
             register: false,
             username: "",
             ok: true,
+            errorMessage: ""
         }
 
         this.sendCredentials = this.sendCredentials.bind(this);
@@ -342,44 +357,32 @@ export default class Preferences extends React.Component {
         var value = this.refs.form.getValue();
 
         if (value != null) {
+            let url = 'http://145.37.144.79:5000/login';
+            url += "?email=" + value.name;
+            url += "&password=" + value.password;
 
-            this.props.func("Hello World");
-
-            var details = {
-                'email': value.name,
-                'password': value.password,
-            };
-
-            var formBody = [];
-            for (var property in details) {
-                var encodedKey = encodeURIComponent(property);
-                var encodedValue = encodeURIComponent(details[property]);
-                formBody.push(encodedKey + "=" + encodedValue);
-            }
-            formBody = formBody.join("&");
-
-            fetch('http://145.37.144.79:5000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                },
-                body: formBody
-            }).then(function (response) {
-                //console.log(response)
-            })
-
-            fetch('http://145.37.144.79:5000/api/loginCheck')
-                .then((response) => response.json())
-                .then((responseJson)=> {
-                    console.log(responseJson['username'])
-                    this.setState({
-                        username: responseJson['username'],
+            axios.post(url)
+                .then(response => {
+                    console.log(response)
+                })
+                .then(() => {
+                    fetch('http://145.37.144.79:5000/api/loginCheck')
+                        .then((response) => response.json())
+                        .then((responseJson) => {
+                            console.log(responseJson['username'])
+                            this.setState({
+                                username: responseJson['username'],
+                            })
+                            this.props.func("Hello World");
+                        }).catch((error) => {
+                        console.log(error)
                     })
-                }).catch((error) => {
-                console.log(error)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    this.errorLogin()
             })
         }
-
 
     }
 
@@ -392,35 +395,30 @@ export default class Preferences extends React.Component {
 
             var value = this.refs.form.getValue();
 
-            var details = {
-                'username': value.username,
-                'email': value.email,
-                'firstname' : value.firstname,
-                'lastname' : value.lastname,
-                'password': value.password,
-                'country': value.country,
-            };
+            if (value != null) {
+                let url = 'http://145.37.144.79:5000/register';
+                url += "?firstName=" + value.firstname;
+                url += "&lastName=" + value.lastname;
+                url += "&username=" + value.username;
+                url += "&email=" + value.email;
+                url += "&password=" + value.password;
+                url += "&country=" + value.country;
 
-            var formBody = [];
-            for (var property in details) {
-                var encodedKey = encodeURIComponent(property);
-                var encodedValue = encodeURIComponent(details[property]);
-                formBody.push(encodedKey + "=" + encodedValue);
+                axios.post(url)
+                    .then(response => {
+                        console.log(response)
+                    }).then(() => {
+                        this.setState({
+                            register: false,
+                        })
+                    })
+                    .catch((error) => {
+                    this.setState({
+                        errorMessage: error.response.data.message,
+                    })
+                    this.registerError()
+                })
             }
-            formBody = formBody.join("&");
-
-            fetch('http://145.37.144.79:5000/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                },
-                body: formBody
-            }).then(function (response) {
-                console.log(response)
-            })
-            this.setState({
-                register: false,
-            })
         }
     }
 
@@ -444,12 +442,10 @@ export default class Preferences extends React.Component {
                             type={Login}
                             options={loginOptions}
                         />
-                        <Button onPress={this.sendCredentials} title="Login" color="#ff922b"/>
+                        <Button onPress={this.sendCredentials} title="Login" color="#495057"/>
                         <View style={styles.registerText}>
-                            <Text>No account?</Text>
-                            <TouchableHighlight onPress={this.changePage}>
-                                <Text>Register here</Text>
-                            </TouchableHighlight>
+                            <Text style={styles.noAccount}>No account?</Text>
+                                <Button title={"Register here"} onPress={this.changePage} color={"#495057"}/>
                             <Text>{this.state.username}</Text>
                         </View>
                     </View>
@@ -463,7 +459,7 @@ export default class Preferences extends React.Component {
                             type={Register}
                             options={registerOptions}
                         />
-                        <Button onPress={this.sendRegister} title="Register" color="#ff922b"/>
+                        <Button onPress={this.sendRegister} title="Register" color="#495057"/>
                         <View style={styles.registerText}>
                             <Text>Already a member?</Text>
                             <TouchableHighlight onPress={this.changePage}>
@@ -498,5 +494,8 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderColor: 'gray',
         paddingTop: 25,
+    },
+    noAccount: {
+        marginBottom: 15,
     }
 })
