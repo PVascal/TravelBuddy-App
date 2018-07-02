@@ -15,12 +15,21 @@ export default class City extends React.Component {
 
     }
 
-    componentDidMount() {
+    componentDidMount(){
         this.wikiQuery()
     }
 
+    componentDidUpdate() {
+        if (this.state.city !== this.props.city) {
+            this.wikiQuery()
+            this.setState({
+                city: this.props.city,
+            })
+        }
+    }
+
     wikiQuery() {
-        let url = 'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=kollum';
+        let url = 'https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=' + this.props.city;
         fetch(url)
             .then((response) => response.json())
             .then((responseJson) => {
@@ -71,10 +80,10 @@ const styles = StyleSheet.create({
         position: 'relative',
         flexDirection: 'row',
         flexWrap:'wrap',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
+        alignItems: 'center',
+        justifyContent: 'center',
         flex: 1,
-        overflow: 'hidden'
+        overflow: 'hidden',
     },
     infoText: {
         position: 'absolute',

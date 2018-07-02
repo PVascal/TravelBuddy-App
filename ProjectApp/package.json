@@ -25,6 +25,7 @@
     "react-native-axios": "^0.17.1",
     "react-native-dropdown-menu": "^2.0.0",
     "react-native-form": "^2.1.2",
+    "react-native-google-maps-directions": "^2.0.0",
     "react-native-maps": "^0.21.0",
     "react-native-material-bottom-navigation": "^1.0.0",
     "react-native-material-menu": "^0.3.1",

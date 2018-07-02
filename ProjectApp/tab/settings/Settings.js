@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, Button} from 'react-native';
+import {StyleSheet, View, Text, Button, Alert} from 'react-native';
 
 import axios from 'axios';
 
@@ -59,14 +59,23 @@ export default class AccountSettings extends React.Component {
         usernameId: "",
         loggedIn: false,
         countries: [],
-        values: []
+        values: [],
+        message: "",
     }
+
+    showAlert = () => {
+        Alert.alert(
+            this.state.message,
+            'Your account have been changed!',
+        )
+    }
+
 
 
     constructor(props) {
         super(props);
 
-        fetch('http://10.0.2.2:5000/api/loginCheck')
+        fetch('http://145.37.144.79:5000/api/loginCheck')
             .then((response) => response.json())
             .then((responseJson)=> {
                 if (responseJson['username'] != null) {
@@ -84,9 +93,11 @@ export default class AccountSettings extends React.Component {
 
     }
 
+
     loadData() {
+        console.log("Voor Sander")
         if(this.state.loggedIn) {
-            let url = 'http://10.0.2.2:5000/api/user';
+            let url = 'http://145.37.144.79:5000/api/user';
             axios.get(url)
                 .then(result => {
                     result = result.data;
@@ -115,7 +126,7 @@ export default class AccountSettings extends React.Component {
         var value = this.refs.form.getValue();
 
         if (value != null) {
-            let url = 'http://10.0.2.2:5000/api/user';
+            let url = 'http://145.37.144.79:5000/api/user';
             url += "?firstName=" + value.firstname;
             url += "&lastName=" + value.lastname;
             url += "&username=" + value.username;
@@ -136,6 +147,8 @@ export default class AccountSettings extends React.Component {
                             message: null,
                             messageId: null
                         }), 2000);
+                        this.loadData()
+                        this.showAlert()
                     }
                 })
                 .catch(error => {
@@ -149,6 +162,7 @@ export default class AccountSettings extends React.Component {
     }
 
     render() {
+
         return (
             <View style={styles.container}>
                 <Text style={{fontSize: 30}}>Account settings</Text>
@@ -161,7 +175,6 @@ export default class AccountSettings extends React.Component {
                             options={updateOptions}
                         />
                         <Button onPress={this.saveSettings} title="Save settings" color="#ff922b"/>
-                        <Text>{this.state.message}</Text>
                     </View>
                 </View>
             </View>
@@ -184,4 +197,9 @@ const styles = StyleSheet.create({
     formContainer: {
         marginBottom: 25,
     },
+    message: {
+        fontSize: 30,
+        marginTop: 15,
+        marginBottom: 30,
+    }
 })

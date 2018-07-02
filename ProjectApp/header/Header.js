@@ -31,12 +31,8 @@ export default class Header extends React.Component {
         this.loginCheck()
     }
 
-    componentDidMount () {
-        this.loginCheck()
-    }
-
     loginCheck() {
-        fetch('http://10.0.2.2:5000/api/loginCheck')
+        fetch('http://145.37.144.79:5000/api/loginCheck')
             .then((response) => response.json())
             .then((responseJson)=> {
                 if (responseJson['username'] != null) {
@@ -64,6 +60,13 @@ export default class Header extends React.Component {
         }
     }
 
+    componentDidMount() {
+            this.loginCheck()
+            this.setState({
+                loginStatus: this.props.status,
+            })
+    }
+
 
     render() {
         return (
@@ -72,15 +75,7 @@ export default class Header extends React.Component {
                     <View style={styles.half}>
                         <Text>{this.state.welcome + this.state.name}</Text>
                     </View>
-                    <Menu
-                        style={styles.half}
-                        ref={this.setMenuRef}
-                        button={<Text onPress={this.showMenu}>Menu</Text>} >
-                        <MenuItem onPress={this.hideMenu}>Home</MenuItem>
-                        <MenuItem onPress={this.hideMenu}>Profile</MenuItem>
-                        <MenuItem onPress={this.hideMenu}>Add event </MenuItem>
-                        <MenuItem onPress={this.hideMenu}>Login</MenuItem>
-                    </Menu>
+                    <Text>Never travel alone</Text>
                 </View>
     </View>
         )
@@ -102,10 +97,6 @@ const styles = StyleSheet.create({
     },
     half: {
         flex: 1,
-    },
-    logo: {
-        justifyContent: 'center',
-        alignItems: 'center'
     },
 });
 

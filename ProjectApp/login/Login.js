@@ -107,7 +107,7 @@ export default class Preferences extends React.Component {
             }
             formBody = formBody.join("&");
 
-            fetch('http://10.0.2.2:5000/login', {
+            fetch('http://145.37.144.79:5000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -117,7 +117,7 @@ export default class Preferences extends React.Component {
                 //console.log(response)
             })
 
-            fetch('http://10.0.2.2:5000/api/loginCheck')
+            fetch('http://145.37.144.79:5000/api/loginCheck')
                 .then((response) => response.json())
                 .then((responseJson)=> {
                     console.log(responseJson['username'])
@@ -158,7 +158,7 @@ export default class Preferences extends React.Component {
             }
             formBody = formBody.join("&");
 
-            fetch('http://10.0.2.2:5000/register', {
+            fetch('http://145.37.144.79:5000/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'

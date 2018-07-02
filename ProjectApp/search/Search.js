@@ -116,7 +116,7 @@ export default class Search extends React.Component {
     }
 
     getCategories() {
-        fetch('http://10.0.2.2:5000/api/categories')
+        fetch('http://145.37.144.79:5000/api/categories')
             .then((response) => response.json())
             .then((responseJson) => {
                 let temp = [];
@@ -251,6 +251,8 @@ const styles = StyleSheet.create({
         flex: 1,
         overflow: 'hidden',
         height: 350,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     background: {
         height: 350,

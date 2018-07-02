@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Button } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Map from "../map/Map";
 
 export default class Modal extends React.Component {
 
@@ -26,7 +27,7 @@ export default class Modal extends React.Component {
                             <Text style={styles.infoText}>{this.props.address}</Text>
                             <Text style={styles.infoText}>{this.props.open}</Text>
                         </View>
-                        <Button title={'Get directions'} color={'#ff922b'} onPress={() => {console.log("Directions")}} />
+                        <Map destLat={this.props.lat} destLng={this.props.lng}/>
                     </View>
                 </ScrollView>
             </View>

@@ -14,7 +14,7 @@ export default class Logout extends React.Component {
 
 
     logout() {
-        axios.get('http://10.0.2.2:5000/logout')
+        axios.get('http://145.37.144.79:5000/logout')
             .then((response) => {
                 console.log("Logged out")
                 this.props.function("Uitloggen");

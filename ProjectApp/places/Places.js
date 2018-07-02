@@ -58,22 +58,23 @@ export default class Places extends React.Component {
         item.photos != null  &&
         content.push(
             <View key={index}>
-                <View style={styles.slide}>
-                    <Image style={{width: 300, height: 250}} source={{uri: "https://maps.googleapis.com/maps/api/place/photo?maxheight=234&maxwidth=280&photoreference=" +
-                        item.photos[0].photo_reference + "&key=AIzaSyDA8JeZ3hy9n1XHBBuq6ke8M9BfiACME_E"}} />
-                    <View style={styles.titleBox} >
-                        <Text style={styles.title}>{ item.name }</Text>
+                <TouchableOpacity onPress={() => this.props.handler(
+                    item.name,
+                    item.photos[0].photo_reference,
+                    item.vicinity,
+                    open,
+                    item.geometry.location.lat,
+                    item.geometry.location.lng,
+                    item.place_id,
+                )} >
+                    <View style={styles.slide}>
+                        <Image style={{width: 300, height: 250}} source={{uri: "https://maps.googleapis.com/maps/api/place/photo?maxheight=234&maxwidth=280&photoreference=" +
+                            item.photos[0].photo_reference + "&key=AIzaSyDA8JeZ3hy9n1XHBBuq6ke8M9BfiACME_E"}} />
+                        <View style={styles.titleBox} >
+                            <Text style={styles.title}>{ item.name }</Text>
+                        </View>
                     </View>
-                    <Button title={'Details'} color={'#ff922b'} onPress={() => this.props.handler(
-                        item.name,
-                        item.photos[0].photo_reference,
-                        item.vicinity,
-                        open,
-                        item.geometry.location.lat,
-                        item.geometry.location.lng,
-                        item.place_id,
-                    )} />
-                </View>
+                </TouchableOpacity>
             </View>
         );
         return content;
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     },
     titleBox: {
         position: 'absolute',
-        bottom: 30,
+        bottom: 0,
         left: 0,
         height: 50,
         backgroundColor: '#ff922b',

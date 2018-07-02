@@ -34,7 +34,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
 
-        fetch('http://10.0.2.2:5000/api/loginCheck')
+        fetch('http://145.37.144.79:5000/api/loginCheck')
             .then((response) => response.json())
             .then((responseJson)=> {
                 if (responseJson['username'] != null) {
@@ -44,7 +44,7 @@ class App extends React.Component {
                     })
                 }
                 if(this.state.loggedIn) {
-                    let url = "http://10.0.2.2:5000/api/user/preferences";
+                    let url = "http://145.37.144.79:5000/api/user/preferences";
                     axios.get(url)
                         .then(response => {
                                 if(response.data) {
@@ -109,6 +109,19 @@ class App extends React.Component {
     ]
 
     componentDidMount() {
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.setState({
+                    gpsLatitude: position.coords.latitude,
+                    gpsLongitude: position.coords.longitude,
+                    error: null,
+                });
+            },
+            (error) => this.setState({ error: error.message }),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
+
         let proxy  = 'https://cors-anywhere.herokuapp.com/';
         fetch('http://api.ipstack.com/check?access_key=201a9fbb71fcb2b3195f6626795b5907')
             .then((response) => response.json())
@@ -126,16 +139,39 @@ class App extends React.Component {
                 }, function(){
 
                 });
+
+                if (this.state.gpsLongitude){
+                    this.setState({
+                        latitude: this.state.gpsLatitude,
+                        longitude: this.state.gpsLongitude
+                    })
+                }
+
                 let places = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='
                     + this.state.latitude + ',' + this.state.longitude;
                 this.setState({
                     query: places,
                     querySet: true
                 });
+
+                let locationURL  =  'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.state.gpsLatitude + ',' + this.state.gpsLongitude + '&key=AIzaSyCRNHsASJT7nxChb3zBLeH2hGJdZGMIZGQ';
+                fetch(locationURL)
+                    .then((location) => location.json())
+                    .then((locationJson) => {
+                        let number = locationJson.results.length - 2;
+                        this.setState({gpsCity: locationJson.results[number].address_components[0].long_name})
+                        if (this.state.gpsCity){
+                            this.setState({
+                                city: this.state.gpsCity
+                            })
+                        }
+                    });
+
+
             }).catch((error) => {
             console.error(error);
         });
-        this.renderScreen()
+
     }
 
     handleClick = () => {
@@ -189,7 +225,7 @@ class App extends React.Component {
     }
 
     getUserCategories() {
-        let url = "http://10.0.2.2:5000/api/user/preferences";
+        let url = "http://145.37.144.79:5000/api/user/preferences";
         axios.get(url)
             .then(response => {
                 let temp = [];
@@ -218,6 +254,12 @@ class App extends React.Component {
     }
 
     render() {
+
+        let map = null;
+        map = <Map
+            latitude={this.state.latitude}
+            longitude={this.state.longitude}
+        />
 
         if(!this.state.querySet) {
             return (
@@ -334,6 +376,10 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
+    },
+    logo: {
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 });
 
