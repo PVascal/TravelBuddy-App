@@ -31,6 +31,10 @@ export default class Header extends React.Component {
         this.loginCheck()
     }
 
+    componentDidMount () {
+        this.loginCheck()
+    }
+
     loginCheck() {
         fetch('http://10.0.2.2:5000/api/loginCheck')
             .then((response) => response.json())

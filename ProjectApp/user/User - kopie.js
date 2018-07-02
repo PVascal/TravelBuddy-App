@@ -4,22 +4,17 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import MaskTabBar from 'react-native-scrollable-tab-view-mask-bar';
 import Favorites from '../tab/favorites/Favorites';
 import Settings from '../tab/settings/Settings';
-import Preferences from '../tab/preferences/Preferences';
-import Logout from '../tab/logout/Logout';
 
 export default class User extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { count: 1 }
-
-        this.onPressClick = this.onPress.bind(this);
-
+        this.state = { count: 0 }
     }
 
     onPress = () => {
         this.setState({
-            count: this.state.count+1,
+            count: this.state.count+1
         })
     }
 
@@ -34,12 +29,22 @@ export default class User extends React.Component {
                         underlineStyle={tabUnderlineStyle}
                         backgroundColor={"#495057"}
                         showMask={false} maskMode='light' />}>
-                    <Preferences tabLabel="Preferences" index={0} compare={this.props.compare} cat={this.props.cat}/>
-                    <Settings tabLabel="Settings" index={1}/>
-                    {/*<Favorites tabLabel="Favorites" index={2}/>
-                    <Favorites tabLabel="Friends" index={3}/>*/}
-                    <Logout tabLabel="Logout" index={4} function={this.props.func}/>
+                    <Favorites tabLabel="Preferences"/>
+                    <Favorites tabLabel="Places" />
+                    <Settings tabLabel="Settings" />
+                    <Favorites tabLabel="Friends" />
                 </ScrollableTabView>
+                <TouchableHighlight
+                    style={styles.button}
+                    onPress={this.onPress}
+                >
+                    <Text> Touch Here </Text>
+                </TouchableHighlight>
+                <View>
+                    <Text>
+                        { this.state.count !== 0 ? this.state.count: null}
+                    </Text>
+                </View>
             </View>
             )
 
@@ -50,7 +55,6 @@ export default class User extends React.Component {
 const styles = StyleSheet.create({
     tabContainer: {
        position: 'relative',
-       minHeight: 750,
     },
 });
 

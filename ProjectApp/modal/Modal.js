@@ -46,14 +46,16 @@ const styles = StyleSheet.create({
         marginBottom: 50,
     },
     title: {
-        fontSize: 30,
+        fontSize: 28,
         textAlign: 'center',
+        marginBottom: 15,
     },
     modalInfo: {
         paddingTop: 15,
         paddingBottom: 15,
         justifyContent: 'center',
         alignItems: 'center',
+        marginBottom: 25,
     },
     infoText: {
         textAlign: 'center',

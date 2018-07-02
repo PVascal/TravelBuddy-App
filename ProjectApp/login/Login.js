@@ -57,7 +57,7 @@ var registerOptions = {
             secureTextEntry: true
         },
         country: {
-            label: "County",
+            label: "Country",
             error: 'Insert a valid country',
         }
     }

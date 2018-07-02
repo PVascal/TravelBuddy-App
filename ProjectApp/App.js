@@ -17,6 +17,7 @@ import BottomNavigation, {
     FullTab
 } from 'react-native-material-bottom-navigation'
 
+console.disableYellowBox = true;
 
 class App extends React.Component {
     state = {
@@ -134,6 +135,7 @@ class App extends React.Component {
             }).catch((error) => {
             console.error(error);
         });
+        this.renderScreen()
     }
 
     handleClick = () => {
