@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
 
 import background from '../images/sevilla.jpg';
 
@@ -52,8 +52,7 @@ export default class City extends React.Component {
                 <View style={styles.info}>
                     <Image source={background}/>
                     <View style={styles.infoText}>
-                        <Text>Gegevens worden opgehaald</Text>
-                        <Text>{this.state.results.length}</Text>
+                        <ActivityIndicator size="large" color="#ff922b" />
                     </View>
                 </View>
             )

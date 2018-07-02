@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Alert, Modal, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+
+import places from '../images/placeholder.png';
 
 import Carousel from 'react-native-snap-carousel';
 
@@ -54,29 +56,42 @@ export default class Places extends React.Component {
             }
         }
 
+        let image;
+        let simpleImage;
+
+        if (item.photos == undefined) {
+            image = <Image style={{width: 300, height: 250}} source={places} />
+            simpleImage = places;
+        } else {
+            image = <Image style={{width: 300, height: 250}} source={{uri: "https://maps.googleapis.com/maps/api/place/photo?maxheight=234&maxwidth=280&photoreference=" +
+                item.photos[0].photo_reference + "&key=AIzaSyDA8JeZ3hy9n1XHBBuq6ke8M9BfiACME_E"}} />;
+                simpleImage = item.photos[0].photo_reference;
+        }
+
+
+
         let content = [];
-        item.photos != null  &&
-        content.push(
-            <View key={index}>
-                <TouchableOpacity onPress={() => this.props.handler(
-                    item.name,
-                    item.photos[0].photo_reference,
-                    item.vicinity,
-                    open,
-                    item.geometry.location.lat,
-                    item.geometry.location.lng,
-                    item.place_id,
-                )} >
-                    <View style={styles.slide}>
-                        <Image style={{width: 300, height: 250}} source={{uri: "https://maps.googleapis.com/maps/api/place/photo?maxheight=234&maxwidth=280&photoreference=" +
-                            item.photos[0].photo_reference + "&key=AIzaSyDA8JeZ3hy9n1XHBBuq6ke8M9BfiACME_E"}} />
-                        <View style={styles.titleBox} >
-                            <Text style={styles.title}>{ item.name }</Text>
+            content.push(
+                <View key={index}>
+                    <TouchableOpacity onPress={() => this.props.handler(
+                        item.name,
+                        image,
+                        item.vicinity,
+                        open,
+                        item.geometry.location.lat,
+                        item.geometry.location.lng,
+                        item.place_id,
+                    )} >
+                        <View style={styles.slide}>
+                            {image}
+                            <View style={styles.titleBox} >
+                                <Text style={styles.title}>{ item.name }</Text>
+                            </View>
                         </View>
-                    </View>
-                </TouchableOpacity>
-            </View>
-        );
+                    </TouchableOpacity>
+                </View>
+            );
+
         return content;
     }
 
@@ -86,8 +101,7 @@ export default class Places extends React.Component {
         if(this.state.isLoading){
             return(
                 <View style={{flex: 1, padding: 20}}>
-                    <Text>De gegevens worden opgehaald.</Text>
-                    <Text>{this.state.results.length}</Text>
+                    <ActivityIndicator size="large" color="#ff922b" />
                 </View>
             )
         }
@@ -95,10 +109,12 @@ export default class Places extends React.Component {
         let sliderWidth = 350;
         let itemWidth = 280;
 
+        let title = this.props.cat.charAt(0).toUpperCase() + this.props.cat.substring(1, this.props.cat.length);
+
         return(
             <View style={{flex: 1, paddingTop:20}}>
                 <Text>{this.state.modal}</Text>
-                <Text style={styles.categoryTitle}>{this.props.cat.split('_').join(' ')}</Text>
+                <Text style={styles.categoryTitle}>{title.split('_').join(' ')}</Text>
                 <Carousel
                     ref={(c) => { this._carousel = c; }}
                     data={this.state.results}

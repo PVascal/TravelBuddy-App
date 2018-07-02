@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, Image, ScrollView, TextInput, FlatList, Picker, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, Image, ScrollView, TextInput, ActivityIndicator, Picker, TouchableOpacity} from 'react-native';
 
 import background from '../images/searchBanner.jpg';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
@@ -30,6 +30,7 @@ export default class Search extends React.Component {
         locationLng: "",
         locationLat: "",
         active: "search",
+        isLoading: false,
     }
 
     apikey = "&key=AIzaSyDA8JeZ3hy9n1XHBBuq6ke8M9BfiACME_E";
@@ -37,12 +38,8 @@ export default class Search extends React.Component {
     constructor(props) {
         super(props);
 
-        this.getCategories()
-
         this.searchType = this.searchType.bind(this);
         this.searchByKeyword = this.searchByKeyword.bind(this);
-        this.searchByPlace = this.searchByPlace.bind(this);
-        this.checkSearch = this.checkSearch.bind(this);
         this.changeInput = this.changeInput.bind(this);
     }
 
@@ -58,96 +55,29 @@ export default class Search extends React.Component {
         })
     }
 
-    checkSearch() {
-        if (this.state.searchType == 'city') {
-            this.searchByPlace()
-        } else {
-            this.searchByKeyword()
-        }
-    }
 
     searchByKeyword () {
+        this.setState({
+            isLoading: true,
+        })
         let keyword = this.state.input.split(' ').join('+');
         let url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + keyword + this.apikey;
         fetch(url)
             .then(response => response.json())
             .then(result => {
                 this.setState({
+                    isLoading: false,
                     results: result.results,
                 });
             });
     }
 
-    searchByPlace() {
-        let keyword = this.state.input.split(' ').join('+');
-        let location = "https://maps.googleapis.com/maps/api/geocode/json?address=" + keyword + this.apikey;
-        let distance = "&radius=" + this.state.radius;
-        let type = "&type=" + this.state.type;
-        this.setState({
-            loading: "loading",
-            results: []
-        })
-        fetch(location)
-            .then(response => response.json())
-            .then(result => {
-                this.setState({
-                    locationLng: result.results[0].geometry.location.lng,
-                    locationLat: result.results[0].geometry.location.lat
-                })
-                let specLocation = this.state.locationLat + "," + this.state.locationLng
-                let url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + specLocation
-                    + distance + type + "&key=AIzaSyDA8JeZ3hy9n1XHBBuq6ke8M9BfiACME_E";
-                console.log(url)
-                fetch(url)
-                    .then(response => response.json())
-                    .then(result => {
-                        this.setState({
-                            loading: ""
-                        })
-                        this.setState({
-                            results: result.results,
-                            searchType: 'keyword',
-                        });
-                        console.log(this.state.results)
-                    });
-            });
-
-
-    }
-
-    getCategories() {
-        fetch('http://145.37.144.79:5000/api/categories')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                let temp = [];
-                let radio = [];
-                this.setState({
-                    categories: responseJson
-                }), function() {
-
-                }
-
-                for (var key in this.state.categories) {
-                    temp.push(key)
-                    object = {label: key.split('_').join(' '), value: key,}
-                    radio.push(object)
-                }
-                this.setState({
-                    keyList: temp,
-                    radioObject: radio,
-                })
-                //console.log(this.state.keyList)
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }
-
-    modalHandler = (name, image, address, lat, lng, id) => {
+    modalHandler = (name, image, address, open, lat, lng, id) => {
         this.setState({
             modalName: name,
             modalImage: image,
             modalAddress: address,
+            modalOpen: open,
             modalLat: lat,
             modalLng: lng,
             modalId: id,
@@ -163,6 +93,7 @@ export default class Search extends React.Component {
     };
 
     getContent() {
+
         if (this.state.active === 'search') {
             return (
                 <View>
@@ -170,50 +101,31 @@ export default class Search extends React.Component {
                         <Image source={background} style={styles.background}/>
                         <View style={styles.infoText}>
                             <Text style={styles.title}>Search TravelBuddy</Text>
-                            <Picker style={styles.picker} selectedValue = {this.state.searchType} onValueChange = {this.searchType}>
-                                <Picker.Item label="City search" value="city" />
-                                <Picker.Item label="Keyword search" value="keyword" />
-                            </Picker>
                             <TextInput
                                 style={styles.input}
                                 underlineColorAndroid='transparent'
-                                placeholder="Do your search"
+                                placeholder="Eg. Restaurant in Amsterdam"
                                 onChangeText={this.changeInput}
                             />
-                            <TouchableOpacity style={styles.button} onPress={this.checkSearch}>
+                            <TouchableOpacity style={styles.button} onPress={this.searchByKeyword}>
                                 <Text style={styles.buttonText}>Search</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
-                    {this.state.searchType === 'city' &&
-                    <View style={styles.filter}>
-                        <View styles={styles.childFilter}>
-                            <Text>Max. distance</Text>
-                            <RadioForm
-                                radio_props={radius}
-                                initial={0}
-                                buttonColor={'#ff922b'}
-                                selectedButtonColor={'#ff922b'}
-                                onPress={(value) => {this.setState({radius:value})}}
-                            />
-                        </View>
-                        <View>
-                            <Text>Type of result</Text>
-                            <View style={styles.typeFilter}>
-                                <ScrollView>
-                                    <RadioForm
-                                        radio_props={this.state.radioObject}
-                                        initial={0}
-                                        buttonColor={'#ff922b'}
-                                        selectedButtonColor={'#ff922b'}
-                                        onPress={(value) => {this.setState({type:value})}}
-                                    />
-                                </ScrollView>
+                    {this.state.isLoading &&
+                        <View style={styles.info}>
+                            <View style={styles.loading}>
+                            <ActivityIndicator size="large" color="#ff922b" />
                             </View>
+                        </View>}
+                    <ResultList results={this.state.results} handler={this.modalHandler}/>
+                    {this.state.results.length === 0 &&
+                    <View style={styles.container}>
+                        <View styles={styles.textContainer}>
+                            <Text style={styles.noResults}>Unfortunately, no results were found.</Text>
                         </View>
                     </View>
                     }
-                    <ResultList results={this.state.results} handler={this.modalHandler}/>
                 </View>
             )
         } else {
@@ -266,7 +178,7 @@ const styles = StyleSheet.create({
         marginRight: 20,
         alignSelf: 'stretch',
         height: 360,
-        width: 320,
+        width: 360,
         padding: 20
     },
     title: {
@@ -308,8 +220,17 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         alignSelf: 'flex-start',
     },
-    childFilter: {
+    textContainer:  {
+        padding: 15,
     },
-    typeFilter: {
-    }
+    noResults: {
+        fontSize: 18,
+    },
+    container: {
+        marginTop: 25,
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
 });

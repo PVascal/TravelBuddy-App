@@ -93,24 +93,30 @@ export default class Autocomplete extends React.Component {
             <View>
                 <View>
                 {this.props.suggestions.map((suggestion, index) => {
+
+                    let title = suggestion.charAt(0).toUpperCase() + suggestion.substring(1, suggestion.length);
+
                     return (
                         <TouchableHighlight key={index} name={suggestion}
                             value={this.props.object[suggestion]}
                             style={styles.suggestion}
                             onPress={this.addPreference.bind(this, this.props.object[suggestion], suggestion)}>
-                            <Text>{suggestion.split('_').join(' ')}</Text>
+                            <Text>{title.split('_').join(' ')}</Text>
                         </TouchableHighlight>
                     )
                 })}
                 </View>
                 <View style={styles.prefContainer}>
                     {this.state.preferences.map((preference, index) => {
+
+                        let title = preference.charAt(0).toUpperCase() + preference.substring(1, preference.length);
+
                         return (
                             <TouchableHighlight key={index}
                                 onPress={() => this.removePreference(index, preference, this.props.object[preference])}
                                 style={styles.preference} >
                                 <View>
-                                    <Text>{preference.split('_').join(' ')}<Icon size={16} color="black" name={"remove"} /></Text>
+                                    <Text>{title.split('_').join(' ')}<Icon size={16} color="black" name={"remove"} /></Text>
                                 </View>
                             </TouchableHighlight>
                         )

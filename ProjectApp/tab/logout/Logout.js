@@ -30,9 +30,7 @@ export default class Logout extends React.Component {
             <View style={styles.container}>
                 <Text style={styles.title}>Logout</Text>
                 <Text style={styles.underTitle}>You can logout with the link below</Text>
-                <TouchableOpacity onPress={this.logout}>
-                    <Text>Logout</Text>
-                </TouchableOpacity>
+                    <Button title={"Logout"} onPress={this.logout} color={"#495057"}/>
             </View>
         )
     }
@@ -46,6 +44,8 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
         paddingLeft: 10,
         paddingRight: 10,
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
     },
     title: {
         fontSize: 30,
