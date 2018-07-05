@@ -1,22 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default class Header extends React.Component {
-
-    _menu = null;
-
-    setMenuRef = ref => {
-        this._menu = ref;
-    };
-
-    hideMenu = () => {
-        this._menu.hide();
-    };
-
-    showMenu = () => {
-        this._menu.show();
-    };
 
     constructor(props) {
         super(props);
@@ -32,7 +17,7 @@ export default class Header extends React.Component {
     }
 
     loginCheck() {
-        fetch('http://145.37.144.79:5000/api/loginCheck')
+        fetch('http://145.37.144.146:5000/api/loginCheck')
             .then((response) => response.json())
             .then((responseJson)=> {
                 if (responseJson['username'] != null) {

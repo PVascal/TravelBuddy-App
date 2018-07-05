@@ -357,7 +357,7 @@ export default class Preferences extends React.Component {
         var value = this.refs.form.getValue();
 
         if (value != null) {
-            let url = 'http://145.37.144.79:5000/login';
+            let url = 'http://145.37.144.146:5000/login';
             url += "?email=" + value.name;
             url += "&password=" + value.password;
 
@@ -366,7 +366,7 @@ export default class Preferences extends React.Component {
                     console.log(response)
                 })
                 .then(() => {
-                    fetch('http://145.37.144.79:5000/api/loginCheck')
+                    fetch('http://145.37.144.146:5000/api/loginCheck')
                         .then((response) => response.json())
                         .then((responseJson) => {
                             console.log(responseJson['username'])
@@ -396,7 +396,7 @@ export default class Preferences extends React.Component {
             var value = this.refs.form.getValue();
 
             if (value != null) {
-                let url = 'http://145.37.144.79:5000/register';
+                let url = 'http://145.37.144.146:5000/register';
                 url += "?firstName=" + value.firstname;
                 url += "&lastName=" + value.lastname;
                 url += "&username=" + value.username;

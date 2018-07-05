@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, TouchableHighlight, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import MaskTabBar from 'react-native-scrollable-tab-view-mask-bar';
-import Favorites from '../tab/favorites/Favorites';
 import Settings from '../tab/settings/Settings';
 import Preferences from '../tab/preferences/Preferences';
 import Logout from '../tab/logout/Logout';

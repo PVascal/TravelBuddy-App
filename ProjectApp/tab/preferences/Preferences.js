@@ -18,7 +18,7 @@ export default class Preferences extends React.Component {
     }
 
     getCategories() {
-        fetch('http://145.37.144.79:5000/api/categories')
+        fetch('http://145.37.144.146:5000/api/categories')
             .then((response) => response.json())
             .then((responseJson) => {
                 let temp = [];

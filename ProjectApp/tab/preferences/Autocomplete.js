@@ -16,7 +16,7 @@ export default class Autocomplete extends React.Component {
             categories: this.props.cat,
         }
 
-        fetch('http://145.37.144.79:5000/api/loginCheck')
+        fetch('http://145.37.144.146:5000/api/loginCheck')
             .then((response) => response.json())
             .then((responseJson)=> {
                 if (responseJson['username'] != null) {
@@ -37,17 +37,16 @@ export default class Autocomplete extends React.Component {
 
     loadData() {
         if(this.state.loggedIn) {
-                let url = "http://145.37.144.79:5000/api/user/preferences";
+                let url = "http://145.37.144.146:5000/api/user/preferences";
                 axios.get(url)
                 .then(response => {
-                        let temp = [];
-                        for (var key in response.data) {
-                            temp.push(key)
-                        }
-                        this.setState({
-                            preferences: temp
-                        })
-
+                    let temp = [];
+                    for (var key in response.data) {
+                        temp.push(key)
+                    }
+                    this.setState({
+                        preferences: temp
+                    })
                 });
         }
     }
@@ -64,7 +63,7 @@ export default class Autocomplete extends React.Component {
         pref.push(result)
         if (check == 0) {
             if(this.state.loggedIn) {
-                let url = "http://145.37.144.79:5000/api/user/preferences?id=" + i
+                let url = "http://145.37.144.146:5000/api/user/preferences?id=" + i
                 axios.post(url)
                 this.setState({
                     preferences: pref,
@@ -77,7 +76,7 @@ export default class Autocomplete extends React.Component {
 
     removePreference(index, name, i) {
         if(this.state.loggedIn) {
-            let url = "http://145.37.144.79:5000/api/user/preferences?id=" + i
+            let url = "http://145.37.144.146:5000/api/user/preferences?id=" + i
             axios.delete(url)
             let array = this.state.preferences;
             array.splice(index, 1);

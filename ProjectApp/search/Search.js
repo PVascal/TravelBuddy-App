@@ -1,19 +1,9 @@
 import React from 'react';
-import {StyleSheet, View, Text, Image, ScrollView, TextInput, ActivityIndicator, Picker, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, Image, ScrollView, TextInput, ActivityIndicator, TouchableOpacity} from 'react-native';
 
 import background from '../images/searchBanner.jpg';
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 import ResultList from "./ResultList";
 import Modal from '../modal/Modal';
-
-var radius = [
-    {label: '5 km', value: 5000 },
-    {label: '10 km', value: 10000 },
-    {label: '15 km', value: 15000 },
-    {label: '20 km', value: 20000 },
-    {label: '25 km', value: 25000 },
-];
-
 
 var categories = []
 
