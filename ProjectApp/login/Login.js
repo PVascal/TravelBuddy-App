@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Text, ScrollView, TextInput, Button, TouchableHighlight, Alert} from 'react-native';
 
 import axios from 'axios';
+import Config from "../Config";
 
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
@@ -357,7 +358,7 @@ export default class Preferences extends React.Component {
         var value = this.refs.form.getValue();
 
         if (value != null) {
-            let url = 'http://145.37.144.146:5000/login';
+            let url = Config.ip + '/login';
             url += "?email=" + value.name;
             url += "&password=" + value.password;
 
@@ -366,7 +367,7 @@ export default class Preferences extends React.Component {
                     console.log(response)
                 })
                 .then(() => {
-                    fetch('http://145.37.144.146:5000/api/loginCheck')
+                    fetch(Config.ip + '/api/loginCheck')
                         .then((response) => response.json())
                         .then((responseJson) => {
                             console.log(responseJson['username'])
@@ -396,7 +397,7 @@ export default class Preferences extends React.Component {
             var value = this.refs.form.getValue();
 
             if (value != null) {
-                let url = 'http://145.37.144.146:5000/register';
+                let url = Config.ip + '/register';
                 url += "?firstName=" + value.firstname;
                 url += "&lastName=" + value.lastname;
                 url += "&username=" + value.username;

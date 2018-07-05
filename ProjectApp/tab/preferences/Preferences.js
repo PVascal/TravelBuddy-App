@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, View, Text, ScrollView} from 'react-native';
 import PreferenceList from './PreferencesList';
+import Config from '../../Config';
 
 export default class Preferences extends React.Component {
 
@@ -18,7 +19,7 @@ export default class Preferences extends React.Component {
     }
 
     getCategories() {
-        fetch('http://145.37.144.146:5000/api/categories')
+        fetch(Config.ip + '/api/categories')
             .then((response) => response.json())
             .then((responseJson) => {
                 let temp = [];

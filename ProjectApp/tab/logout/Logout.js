@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Text, Button} from 'react-native';
 
 import axios from 'axios';
+import Config from '../../Config';
 
 export default class Logout extends React.Component {
 
@@ -14,7 +15,7 @@ export default class Logout extends React.Component {
 
 
     logout() {
-        axios.get('http://145.37.144.146:5000/logout')
+        axios.get(Config.ip + '/logout')
             .then((response) => {
                 console.log("Logged out")
                 this.props.function("Uitloggen");

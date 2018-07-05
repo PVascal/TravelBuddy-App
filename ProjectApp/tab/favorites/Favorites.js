@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 
 import axios from 'axios';
+import Config from '../../Config';
 
 export default class Favorites extends React.Component {
 
@@ -15,7 +16,7 @@ export default class Favorites extends React.Component {
             photos: [],
         }
 
-        this.url = "http://145.37.144.146:5000/api/user/favorite";
+        this.url = Config.ip + "/api/user/favorite";
         this.placeDetailsUrl = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
         this.proxyUrl = "https://cors-anywhere.herokuapp.com/";
         this.imgUrl = "https://maps.googleapis.com/maps/api/place/photo?maxheight=234&maxwidth=280&photoreference=";

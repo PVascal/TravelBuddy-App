@@ -8,6 +8,7 @@ import Modal from './modal/Modal';
 import User from './user/User'
 import Login from './login/Login'
 import Search from './search/Search'
+import Config from './Config';
 
 import axios from 'axios';
 import logo from './images/logo.png';
@@ -34,7 +35,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
 
-        fetch('http://145.37.144.146:5000/api/loginCheck')
+        fetch(Config.ip + '/api/loginCheck')
             .then((response) => response.json())
             .then((responseJson)=> {
                 if (responseJson['username'] != null) {
@@ -44,7 +45,7 @@ class App extends React.Component {
                     })
                 }
                 if(this.state.loggedIn) {
-                    let url = "http://145.37.144.146:5000/api/user/preferences";
+                    let url = Config.ip + "/api/user/preferences";
                     axios.get(url)
                         .then(response => {
                                 if(response.data) {
@@ -223,7 +224,7 @@ class App extends React.Component {
     }
 
     getUserCategories() {
-        let url = "http://145.37.144.79:5000/api/user/preferences";
+        let url = Config.ip + "/api/user/preferences";
         axios.get(url)
             .then(response => {
                 let temp = [];

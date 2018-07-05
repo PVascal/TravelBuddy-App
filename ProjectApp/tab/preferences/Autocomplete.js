@@ -3,6 +3,7 @@ import {StyleSheet, View, Text, TouchableHighlight} from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
+import Config from "../../Config";
 
 export default class Autocomplete extends React.Component {
 
@@ -16,7 +17,7 @@ export default class Autocomplete extends React.Component {
             categories: this.props.cat,
         }
 
-        fetch('http://145.37.144.146:5000/api/loginCheck')
+        fetch(Config.ip + '/api/loginCheck')
             .then((response) => response.json())
             .then((responseJson)=> {
                 if (responseJson['username'] != null) {
@@ -37,7 +38,7 @@ export default class Autocomplete extends React.Component {
 
     loadData() {
         if(this.state.loggedIn) {
-                let url = "http://145.37.144.146:5000/api/user/preferences";
+                let url = Config.ip + "/api/user/preferences";
                 axios.get(url)
                 .then(response => {
                     let temp = [];
@@ -63,7 +64,7 @@ export default class Autocomplete extends React.Component {
         pref.push(result)
         if (check == 0) {
             if(this.state.loggedIn) {
-                let url = "http://145.37.144.146:5000/api/user/preferences?id=" + i
+                let url = Config.ip + "/api/user/preferences?id=" + i
                 axios.post(url)
                 this.setState({
                     preferences: pref,
@@ -76,7 +77,7 @@ export default class Autocomplete extends React.Component {
 
     removePreference(index, name, i) {
         if(this.state.loggedIn) {
-            let url = "http://145.37.144.146:5000/api/user/preferences?id=" + i
+            let url = Config.ip + "/api/user/preferences?id=" + i
             axios.delete(url)
             let array = this.state.preferences;
             array.splice(index, 1);

@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Config from '../Config';
 
 export default class Header extends React.Component {
 
@@ -17,7 +18,7 @@ export default class Header extends React.Component {
     }
 
     loginCheck() {
-        fetch('http://145.37.144.146:5000/api/loginCheck')
+        fetch(Config.ip + '/api/loginCheck')
             .then((response) => response.json())
             .then((responseJson)=> {
                 if (responseJson['username'] != null) {

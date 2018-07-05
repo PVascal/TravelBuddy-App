@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Text, Button, Alert} from 'react-native';
 
 import axios from 'axios';
+import Config from '../../Config'
 
 var t = require('tcomb-form-native');
 var Form = t.form.Form;
@@ -330,7 +331,7 @@ export default class AccountSettings extends React.Component {
     constructor(props) {
         super(props);
 
-        fetch('http://145.37.144.146:5000/api/loginCheck')
+        fetch(Config.ip + '/api/loginCheck')
             .then((response) => response.json())
             .then((responseJson)=> {
                 if (responseJson['username'] != null) {
@@ -351,7 +352,7 @@ export default class AccountSettings extends React.Component {
 
     loadData() {
         if(this.state.loggedIn) {
-            let url = 'http://145.37.144.146:5000/api/user';
+            let url = Config.ip + '/api/user';
             axios.get(url)
                 .then(result => {
                     result = result.data;
@@ -380,7 +381,7 @@ export default class AccountSettings extends React.Component {
         var value = this.refs.form.getValue();
 
         if (value != null) {
-            let url = 'http://145.37.144.146:5000/api/user';
+            let url = Config.ip + '/api/user';
             url += "?firstName=" + value.firstname;
             url += "&lastName=" + value.lastname;
             url += "&username=" + value.username;
